@@ -1,0 +1,13 @@
+#-----------------------------------------------------------
+# Vivado v2022.1 (64-bit)
+# SW Build 3526262 on Mon Apr 18 15:48:16 MDT 2022
+# IP Build 3524634 on Mon Apr 18 20:55:01 MDT 2022
+# Start of session at: Tue Sep  6 16:39:39 2022
+# Process ID: 38640
+# Current directory: D:/VivadoPrj/Nexys-all-Projects/NVideoHDMI-22.1u/hw/hw/hw.runs/hdmi_xbar_2_synth_1
+# Command line: vivado.exe -log hdmi_xbar_2.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source hdmi_xbar_2.tcl
+# Log file: D:/VivadoPrj/Nexys-all-Projects/NVideoHDMI-22.1u/hw/hw/hw.runs/hdmi_xbar_2_synth_1/hdmi_xbar_2.vds
+# Journal file: D:/VivadoPrj/Nexys-all-Projects/NVideoHDMI-22.1u/hw/hw/hw.runs/hdmi_xbar_2_synth_1\vivado.jou
+# Running On: WK0161, OS: Windows, CPU Frequency: 2712 MHz, CPU Physical cores: 6, Host memory: 34069 MB
+#-----------------------------------------------------------
+source hdmi_xbar_2.tcl -notrace

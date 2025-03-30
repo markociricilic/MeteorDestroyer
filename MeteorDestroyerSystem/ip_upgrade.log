@@ -1,0 +1,16 @@
+Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
+------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2022.1 (win64) Build 3526262 Mon Apr 18 15:48:16 MDT 2022
+| Date         : Mon Mar 17 19:24:55 2025
+| Host         : DESKTOP-BINRERU running 64-bit major release  (build 9200)
+| Command      : upgrade_ip
+| Device       : xc7a200tsbg484-1
+------------------------------------------------------------------------------------
+
+Upgrade Log for IP 'hdmi_object_localizer_1_0'
+
+1. Summary
+----------
+
+SUCCESS in the upgrade of hdmi_object_localizer_1_0 (xilinx.com:user:object_localizer:2.0) from (Rev. 1) to (Rev. 2)
+

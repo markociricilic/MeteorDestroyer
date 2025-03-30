@@ -1,0 +1,13 @@
+#-----------------------------------------------------------
+# Vivado v2022.1 (64-bit)
+# SW Build 3526262 on Mon Apr 18 15:48:16 MDT 2022
+# IP Build 3524634 on Mon Apr 18 20:55:01 MDT 2022
+# Start of session at: Mon Mar 10 18:48:40 2025
+# Process ID: 28864
+# Current directory: C:/Users/marko/Downloads/NVideoHDMI-22-1-hw/hw/hw.runs/hdmi_microblaze_0_axi_intc_0_synth_1
+# Command line: vivado.exe -log hdmi_microblaze_0_axi_intc_0.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source hdmi_microblaze_0_axi_intc_0.tcl
+# Log file: C:/Users/marko/Downloads/NVideoHDMI-22-1-hw/hw/hw.runs/hdmi_microblaze_0_axi_intc_0_synth_1/hdmi_microblaze_0_axi_intc_0.vds
+# Journal file: C:/Users/marko/Downloads/NVideoHDMI-22-1-hw/hw/hw.runs/hdmi_microblaze_0_axi_intc_0_synth_1\vivado.jou
+# Running On: MUGEN, OS: Windows, CPU Frequency: 2304 MHz, CPU Physical cores: 8, Host memory: 33979 MB
+#-----------------------------------------------------------
+source hdmi_microblaze_0_axi_intc_0.tcl -notrace

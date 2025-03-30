@@ -1,0 +1,348 @@
+#-----------------------------------------------------------
+# Vivado v2022.1 (64-bit)
+# SW Build 3526262 on Mon Apr 18 15:48:16 MDT 2022
+# IP Build 3524634 on Mon Apr 18 20:55:01 MDT 2022
+# Start of session at: Mon Mar 17 19:26:52 2025
+# Process ID: 40500
+# Current directory: C:/Users/Muaz/Documents/MeteorDestroyer/MeteorDestroyerSystem/MeteorDestroyerSystem.runs/hdmi_object_localizer_1_0_synth_1
+# Command line: vivado.exe -log hdmi_object_localizer_1_0.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source hdmi_object_localizer_1_0.tcl
+# Log file: C:/Users/Muaz/Documents/MeteorDestroyer/MeteorDestroyerSystem/MeteorDestroyerSystem.runs/hdmi_object_localizer_1_0_synth_1/hdmi_object_localizer_1_0.vds
+# Journal file: C:/Users/Muaz/Documents/MeteorDestroyer/MeteorDestroyerSystem/MeteorDestroyerSystem.runs/hdmi_object_localizer_1_0_synth_1\vivado.jou
+# Running On: DESKTOP-BINRERU, OS: Windows, CPU Frequency: 3993 MHz, CPU Physical cores: 12, Host memory: 17119 MB
+#-----------------------------------------------------------
+source hdmi_object_localizer_1_0.tcl -notrace
+create_project: Time (s): cpu = 00:00:03 ; elapsed = 00:00:05 . Memory (MB): peak = 1273.113 ; gain = 0.000
+INFO: [IP_Flow 19-234] Refreshing IP repositories
+INFO: [IP_Flow 19-1700] Loaded user IP repository 'c:/Users/Muaz/Downloads/hw/hw.srcs/sources_1/parser'.
+INFO: [IP_Flow 19-1700] Loaded user IP repository 'c:/Users/Muaz/Downloads/hw/hw.srcs/sources_1/localization'.
+INFO: [IP_Flow 19-1700] Loaded user IP repository 'c:/Users/Muaz/Downloads/hw/hw.ipdefs/repo'.
+INFO: [IP_Flow 19-1700] Loaded user IP repository 'c:/Users/Muaz/Documents/MeteorDestroyer/Parser_ip'.
+INFO: [IP_Flow 19-1700] Loaded user IP repository 'c:/Users/Muaz/Documents/MeteorDestroyer/Localizer_ip'.
+INFO: [IP_Flow 19-2313] Loaded Vivado IP repository 'C:/Xilinx/Vivado/2022.1/data/ip'.
+WARNING: [IP_Flow 19-4995] The host OS only allows 260 characters in a normal path. The IP cache path is more than 80 characters. If you experience issues with IP caching, please consider changing the IP cache to a location with a shorter path. Alternately consider using the OS subst command to map part of the path to a drive letter. 
+Current IP cache path is c:/Users/Muaz/Documents/MeteorDestroyer/MeteorDestroyerSystem/MeteorDestroyerSystem.cache/ip 
+Command: synth_design -top hdmi_object_localizer_1_0 -part xc7a200tsbg484-1 -incremental_mode off -mode out_of_context
+Starting synth_design
+Attempting to get a license for feature 'Synthesis' and/or device 'xc7a200t'
+INFO: [Common 17-349] Got license for feature 'Synthesis' and/or device 'xc7a200t'
+INFO: [Device 21-403] Loading part xc7a200tsbg484-1
+INFO: [Synth 8-7079] Multithreading enabled for synth_design using a maximum of 2 processes.
+INFO: [Synth 8-7078] Launching helper process for spawning children vivado processes
+INFO: [Synth 8-7075] Helper process launched with PID 9604
+WARNING: [Synth 8-9501] generate block is allowed only inside loop and conditional generate in SystemVerilog mode [C:/Xilinx/Vivado/2022.1/data/ip/xpm/xpm_fifo/hdl/xpm_fifo.sv:4023]
+WARNING: [Synth 8-10180] variable 'i' must explicitly be declared as automatic or static [c:/Users/Muaz/Documents/MeteorDestroyer/MeteorDestroyerSystem/MeteorDestroyerSystem.gen/sources_1/bd/hdmi/ipshared/6912/src/object_localization.sv:509]
+---------------------------------------------------------------------------------
+Starting RTL Elaboration : Time (s): cpu = 00:00:06 ; elapsed = 00:00:07 . Memory (MB): peak = 1273.113 ; gain = 0.000
+---------------------------------------------------------------------------------
+INFO: [Synth 8-6157] synthesizing module 'hdmi_object_localizer_1_0' [c:/Users/Muaz/Documents/MeteorDestroyer/MeteorDestroyerSystem/MeteorDestroyerSystem.gen/sources_1/bd/hdmi/ip/hdmi_object_localizer_1_0/synth/hdmi_object_localizer_1_0.sv:53]
+INFO: [Synth 8-6157] synthesizing module 'object_localizer' [c:/Users/Muaz/Documents/MeteorDestroyer/MeteorDestroyerSystem/MeteorDestroyerSystem.gen/sources_1/bd/hdmi/ipshared/6912/src/object_localization.sv:1]
+INFO: [Synth 8-6157] synthesizing module 'min_n' [c:/Users/Muaz/Documents/MeteorDestroyer/MeteorDestroyerSystem/MeteorDestroyerSystem.gen/sources_1/bd/hdmi/ipshared/6912/src/min.sv:1]
+INFO: [Synth 8-6157] synthesizing module 'min2' [c:/Users/Muaz/Documents/MeteorDestroyer/MeteorDestroyerSystem/MeteorDestroyerSystem.gen/sources_1/bd/hdmi/ipshared/6912/src/min.sv:70]
+INFO: [Synth 8-6155] done synthesizing module 'min2' (0#1) [c:/Users/Muaz/Documents/MeteorDestroyer/MeteorDestroyerSystem/MeteorDestroyerSystem.gen/sources_1/bd/hdmi/ipshared/6912/src/min.sv:70]
+INFO: [Synth 8-6157] synthesizing module 'parallel_to_serial' [c:/Users/Muaz/Documents/MeteorDestroyer/MeteorDestroyerSystem/MeteorDestroyerSystem.gen/sources_1/bd/hdmi/ipshared/6912/src/p2s.sv:2]
+INFO: [Synth 8-6155] done synthesizing module 'parallel_to_serial' (0#1) [c:/Users/Muaz/Documents/MeteorDestroyer/MeteorDestroyerSystem/MeteorDestroyerSystem.gen/sources_1/bd/hdmi/ipshared/6912/src/p2s.sv:2]
+INFO: [Synth 8-6155] done synthesizing module 'min_n' (0#1) [c:/Users/Muaz/Documents/MeteorDestroyer/MeteorDestroyerSystem/MeteorDestroyerSystem.gen/sources_1/bd/hdmi/ipshared/6912/src/min.sv:1]
+INFO: [Synth 8-6157] synthesizing module 'parallel_to_serial__parameterized0' [c:/Users/Muaz/Documents/MeteorDestroyer/MeteorDestroyerSystem/MeteorDestroyerSystem.gen/sources_1/bd/hdmi/ipshared/6912/src/p2s.sv:2]
+INFO: [Synth 8-6155] done synthesizing module 'parallel_to_serial__parameterized0' (0#1) [c:/Users/Muaz/Documents/MeteorDestroyer/MeteorDestroyerSystem/MeteorDestroyerSystem.gen/sources_1/bd/hdmi/ipshared/6912/src/p2s.sv:2]
+INFO: [Synth 8-6157] synthesizing module 'mult2_add' [c:/Users/Muaz/Documents/MeteorDestroyer/MeteorDestroyerSystem/MeteorDestroyerSystem.gen/sources_1/bd/hdmi/ipshared/6912/src/mult2.sv:1]
+INFO: [Synth 8-6157] synthesizing module 'DSP48E1' [C:/Xilinx/Vivado/2022.1/scripts/rt/data/unisim_comp.v:26576]
+INFO: [Synth 8-6155] done synthesizing module 'DSP48E1' (0#1) [C:/Xilinx/Vivado/2022.1/scripts/rt/data/unisim_comp.v:26576]
+WARNING: [Synth 8-7071] port 'ACOUT' of module 'DSP48E1' is unconnected for instance 'DSP48E1_inst' [c:/Users/Muaz/Documents/MeteorDestroyer/MeteorDestroyerSystem/MeteorDestroyerSystem.gen/sources_1/bd/hdmi/ipshared/6912/src/mult2.sv:42]
+WARNING: [Synth 8-7071] port 'BCOUT' of module 'DSP48E1' is unconnected for instance 'DSP48E1_inst' [c:/Users/Muaz/Documents/MeteorDestroyer/MeteorDestroyerSystem/MeteorDestroyerSystem.gen/sources_1/bd/hdmi/ipshared/6912/src/mult2.sv:42]
+WARNING: [Synth 8-7071] port 'CARRYCASCOUT' of module 'DSP48E1' is unconnected for instance 'DSP48E1_inst' [c:/Users/Muaz/Documents/MeteorDestroyer/MeteorDestroyerSystem/MeteorDestroyerSystem.gen/sources_1/bd/hdmi/ipshared/6912/src/mult2.sv:42]
+WARNING: [Synth 8-7071] port 'CARRYOUT' of module 'DSP48E1' is unconnected for instance 'DSP48E1_inst' [c:/Users/Muaz/Documents/MeteorDestroyer/MeteorDestroyerSystem/MeteorDestroyerSystem.gen/sources_1/bd/hdmi/ipshared/6912/src/mult2.sv:42]
+WARNING: [Synth 8-7071] port 'MULTSIGNOUT' of module 'DSP48E1' is unconnected for instance 'DSP48E1_inst' [c:/Users/Muaz/Documents/MeteorDestroyer/MeteorDestroyerSystem/MeteorDestroyerSystem.gen/sources_1/bd/hdmi/ipshared/6912/src/mult2.sv:42]
+WARNING: [Synth 8-7071] port 'OVERFLOW' of module 'DSP48E1' is unconnected for instance 'DSP48E1_inst' [c:/Users/Muaz/Documents/MeteorDestroyer/MeteorDestroyerSystem/MeteorDestroyerSystem.gen/sources_1/bd/hdmi/ipshared/6912/src/mult2.sv:42]
+WARNING: [Synth 8-7071] port 'PATTERNBDETECT' of module 'DSP48E1' is unconnected for instance 'DSP48E1_inst' [c:/Users/Muaz/Documents/MeteorDestroyer/MeteorDestroyerSystem/MeteorDestroyerSystem.gen/sources_1/bd/hdmi/ipshared/6912/src/mult2.sv:42]
+WARNING: [Synth 8-7071] port 'PATTERNDETECT' of module 'DSP48E1' is unconnected for instance 'DSP48E1_inst' [c:/Users/Muaz/Documents/MeteorDestroyer/MeteorDestroyerSystem/MeteorDestroyerSystem.gen/sources_1/bd/hdmi/ipshared/6912/src/mult2.sv:42]
+WARNING: [Synth 8-7071] port 'PCOUT' of module 'DSP48E1' is unconnected for instance 'DSP48E1_inst' [c:/Users/Muaz/Documents/MeteorDestroyer/MeteorDestroyerSystem/MeteorDestroyerSystem.gen/sources_1/bd/hdmi/ipshared/6912/src/mult2.sv:42]
+WARNING: [Synth 8-7071] port 'UNDERFLOW' of module 'DSP48E1' is unconnected for instance 'DSP48E1_inst' [c:/Users/Muaz/Documents/MeteorDestroyer/MeteorDestroyerSystem/MeteorDestroyerSystem.gen/sources_1/bd/hdmi/ipshared/6912/src/mult2.sv:42]
+WARNING: [Synth 8-7071] port 'ACIN' of module 'DSP48E1' is unconnected for instance 'DSP48E1_inst' [c:/Users/Muaz/Documents/MeteorDestroyer/MeteorDestroyerSystem/MeteorDestroyerSystem.gen/sources_1/bd/hdmi/ipshared/6912/src/mult2.sv:42]
+WARNING: [Synth 8-7071] port 'BCIN' of module 'DSP48E1' is unconnected for instance 'DSP48E1_inst' [c:/Users/Muaz/Documents/MeteorDestroyer/MeteorDestroyerSystem/MeteorDestroyerSystem.gen/sources_1/bd/hdmi/ipshared/6912/src/mult2.sv:42]
+WARNING: [Synth 8-7071] port 'CARRYCASCIN' of module 'DSP48E1' is unconnected for instance 'DSP48E1_inst' [c:/Users/Muaz/Documents/MeteorDestroyer/MeteorDestroyerSystem/MeteorDestroyerSystem.gen/sources_1/bd/hdmi/ipshared/6912/src/mult2.sv:42]
+WARNING: [Synth 8-7071] port 'CEA1' of module 'DSP48E1' is unconnected for instance 'DSP48E1_inst' [c:/Users/Muaz/Documents/MeteorDestroyer/MeteorDestroyerSystem/MeteorDestroyerSystem.gen/sources_1/bd/hdmi/ipshared/6912/src/mult2.sv:42]
+WARNING: [Synth 8-7071] port 'CEA2' of module 'DSP48E1' is unconnected for instance 'DSP48E1_inst' [c:/Users/Muaz/Documents/MeteorDestroyer/MeteorDestroyerSystem/MeteorDestroyerSystem.gen/sources_1/bd/hdmi/ipshared/6912/src/mult2.sv:42]
+WARNING: [Synth 8-7071] port 'CEB1' of module 'DSP48E1' is unconnected for instance 'DSP48E1_inst' [c:/Users/Muaz/Documents/MeteorDestroyer/MeteorDestroyerSystem/MeteorDestroyerSystem.gen/sources_1/bd/hdmi/ipshared/6912/src/mult2.sv:42]
+WARNING: [Synth 8-7071] port 'CEB2' of module 'DSP48E1' is unconnected for instance 'DSP48E1_inst' [c:/Users/Muaz/Documents/MeteorDestroyer/MeteorDestroyerSystem/MeteorDestroyerSystem.gen/sources_1/bd/hdmi/ipshared/6912/src/mult2.sv:42]
+WARNING: [Synth 8-7071] port 'MULTSIGNIN' of module 'DSP48E1' is unconnected for instance 'DSP48E1_inst' [c:/Users/Muaz/Documents/MeteorDestroyer/MeteorDestroyerSystem/MeteorDestroyerSystem.gen/sources_1/bd/hdmi/ipshared/6912/src/mult2.sv:42]
+WARNING: [Synth 8-7071] port 'PCIN' of module 'DSP48E1' is unconnected for instance 'DSP48E1_inst' [c:/Users/Muaz/Documents/MeteorDestroyer/MeteorDestroyerSystem/MeteorDestroyerSystem.gen/sources_1/bd/hdmi/ipshared/6912/src/mult2.sv:42]
+WARNING: [Synth 8-7071] port 'RSTA' of module 'DSP48E1' is unconnected for instance 'DSP48E1_inst' [c:/Users/Muaz/Documents/MeteorDestroyer/MeteorDestroyerSystem/MeteorDestroyerSystem.gen/sources_1/bd/hdmi/ipshared/6912/src/mult2.sv:42]
+WARNING: [Synth 8-7023] instance 'DSP48E1_inst' of module 'DSP48E1' has 49 connections declared, but only 29 given [c:/Users/Muaz/Documents/MeteorDestroyer/MeteorDestroyerSystem/MeteorDestroyerSystem.gen/sources_1/bd/hdmi/ipshared/6912/src/mult2.sv:42]
+INFO: [Synth 8-6155] done synthesizing module 'mult2_add' (0#1) [c:/Users/Muaz/Documents/MeteorDestroyer/MeteorDestroyerSystem/MeteorDestroyerSystem.gen/sources_1/bd/hdmi/ipshared/6912/src/mult2.sv:1]
+INFO: [Synth 8-6157] synthesizing module 'mult2_accumulate' [c:/Users/Muaz/Documents/MeteorDestroyer/MeteorDestroyerSystem/MeteorDestroyerSystem.gen/sources_1/bd/hdmi/ipshared/6912/src/mult2.sv:77]
+INFO: [Synth 8-6157] synthesizing module 'DSP48E1__parameterized0' [C:/Xilinx/Vivado/2022.1/scripts/rt/data/unisim_comp.v:26576]
+INFO: [Synth 8-6155] done synthesizing module 'DSP48E1__parameterized0' (0#1) [C:/Xilinx/Vivado/2022.1/scripts/rt/data/unisim_comp.v:26576]
+WARNING: [Synth 8-7071] port 'ACOUT' of module 'DSP48E1' is unconnected for instance 'DSP48E1_inst' [c:/Users/Muaz/Documents/MeteorDestroyer/MeteorDestroyerSystem/MeteorDestroyerSystem.gen/sources_1/bd/hdmi/ipshared/6912/src/mult2.sv:121]
+WARNING: [Synth 8-7071] port 'BCOUT' of module 'DSP48E1' is unconnected for instance 'DSP48E1_inst' [c:/Users/Muaz/Documents/MeteorDestroyer/MeteorDestroyerSystem/MeteorDestroyerSystem.gen/sources_1/bd/hdmi/ipshared/6912/src/mult2.sv:121]
+WARNING: [Synth 8-7071] port 'CARRYCASCOUT' of module 'DSP48E1' is unconnected for instance 'DSP48E1_inst' [c:/Users/Muaz/Documents/MeteorDestroyer/MeteorDestroyerSystem/MeteorDestroyerSystem.gen/sources_1/bd/hdmi/ipshared/6912/src/mult2.sv:121]
+WARNING: [Synth 8-7071] port 'CARRYOUT' of module 'DSP48E1' is unconnected for instance 'DSP48E1_inst' [c:/Users/Muaz/Documents/MeteorDestroyer/MeteorDestroyerSystem/MeteorDestroyerSystem.gen/sources_1/bd/hdmi/ipshared/6912/src/mult2.sv:121]
+WARNING: [Synth 8-7071] port 'MULTSIGNOUT' of module 'DSP48E1' is unconnected for instance 'DSP48E1_inst' [c:/Users/Muaz/Documents/MeteorDestroyer/MeteorDestroyerSystem/MeteorDestroyerSystem.gen/sources_1/bd/hdmi/ipshared/6912/src/mult2.sv:121]
+WARNING: [Synth 8-7071] port 'OVERFLOW' of module 'DSP48E1' is unconnected for instance 'DSP48E1_inst' [c:/Users/Muaz/Documents/MeteorDestroyer/MeteorDestroyerSystem/MeteorDestroyerSystem.gen/sources_1/bd/hdmi/ipshared/6912/src/mult2.sv:121]
+WARNING: [Synth 8-7071] port 'PATTERNBDETECT' of module 'DSP48E1' is unconnected for instance 'DSP48E1_inst' [c:/Users/Muaz/Documents/MeteorDestroyer/MeteorDestroyerSystem/MeteorDestroyerSystem.gen/sources_1/bd/hdmi/ipshared/6912/src/mult2.sv:121]
+WARNING: [Synth 8-7071] port 'PATTERNDETECT' of module 'DSP48E1' is unconnected for instance 'DSP48E1_inst' [c:/Users/Muaz/Documents/MeteorDestroyer/MeteorDestroyerSystem/MeteorDestroyerSystem.gen/sources_1/bd/hdmi/ipshared/6912/src/mult2.sv:121]
+WARNING: [Synth 8-7071] port 'PCOUT' of module 'DSP48E1' is unconnected for instance 'DSP48E1_inst' [c:/Users/Muaz/Documents/MeteorDestroyer/MeteorDestroyerSystem/MeteorDestroyerSystem.gen/sources_1/bd/hdmi/ipshared/6912/src/mult2.sv:121]
+WARNING: [Synth 8-7071] port 'UNDERFLOW' of module 'DSP48E1' is unconnected for instance 'DSP48E1_inst' [c:/Users/Muaz/Documents/MeteorDestroyer/MeteorDestroyerSystem/MeteorDestroyerSystem.gen/sources_1/bd/hdmi/ipshared/6912/src/mult2.sv:121]
+WARNING: [Synth 8-7071] port 'ACIN' of module 'DSP48E1' is unconnected for instance 'DSP48E1_inst' [c:/Users/Muaz/Documents/MeteorDestroyer/MeteorDestroyerSystem/MeteorDestroyerSystem.gen/sources_1/bd/hdmi/ipshared/6912/src/mult2.sv:121]
+WARNING: [Synth 8-7071] port 'BCIN' of module 'DSP48E1' is unconnected for instance 'DSP48E1_inst' [c:/Users/Muaz/Documents/MeteorDestroyer/MeteorDestroyerSystem/MeteorDestroyerSystem.gen/sources_1/bd/hdmi/ipshared/6912/src/mult2.sv:121]
+WARNING: [Synth 8-7071] port 'CARRYCASCIN' of module 'DSP48E1' is unconnected for instance 'DSP48E1_inst' [c:/Users/Muaz/Documents/MeteorDestroyer/MeteorDestroyerSystem/MeteorDestroyerSystem.gen/sources_1/bd/hdmi/ipshared/6912/src/mult2.sv:121]
+WARNING: [Synth 8-7071] port 'CEA1' of module 'DSP48E1' is unconnected for instance 'DSP48E1_inst' [c:/Users/Muaz/Documents/MeteorDestroyer/MeteorDestroyerSystem/MeteorDestroyerSystem.gen/sources_1/bd/hdmi/ipshared/6912/src/mult2.sv:121]
+WARNING: [Synth 8-7071] port 'CEA2' of module 'DSP48E1' is unconnected for instance 'DSP48E1_inst' [c:/Users/Muaz/Documents/MeteorDestroyer/MeteorDestroyerSystem/MeteorDestroyerSystem.gen/sources_1/bd/hdmi/ipshared/6912/src/mult2.sv:121]
+WARNING: [Synth 8-7071] port 'CEB1' of module 'DSP48E1' is unconnected for instance 'DSP48E1_inst' [c:/Users/Muaz/Documents/MeteorDestroyer/MeteorDestroyerSystem/MeteorDestroyerSystem.gen/sources_1/bd/hdmi/ipshared/6912/src/mult2.sv:121]
+WARNING: [Synth 8-7071] port 'CEB2' of module 'DSP48E1' is unconnected for instance 'DSP48E1_inst' [c:/Users/Muaz/Documents/MeteorDestroyer/MeteorDestroyerSystem/MeteorDestroyerSystem.gen/sources_1/bd/hdmi/ipshared/6912/src/mult2.sv:121]
+WARNING: [Synth 8-7071] port 'MULTSIGNIN' of module 'DSP48E1' is unconnected for instance 'DSP48E1_inst' [c:/Users/Muaz/Documents/MeteorDestroyer/MeteorDestroyerSystem/MeteorDestroyerSystem.gen/sources_1/bd/hdmi/ipshared/6912/src/mult2.sv:121]
+WARNING: [Synth 8-7071] port 'PCIN' of module 'DSP48E1' is unconnected for instance 'DSP48E1_inst' [c:/Users/Muaz/Documents/MeteorDestroyer/MeteorDestroyerSystem/MeteorDestroyerSystem.gen/sources_1/bd/hdmi/ipshared/6912/src/mult2.sv:121]
+WARNING: [Synth 8-7071] port 'RSTA' of module 'DSP48E1' is unconnected for instance 'DSP48E1_inst' [c:/Users/Muaz/Documents/MeteorDestroyer/MeteorDestroyerSystem/MeteorDestroyerSystem.gen/sources_1/bd/hdmi/ipshared/6912/src/mult2.sv:121]
+WARNING: [Synth 8-7023] instance 'DSP48E1_inst' of module 'DSP48E1' has 49 connections declared, but only 29 given [c:/Users/Muaz/Documents/MeteorDestroyer/MeteorDestroyerSystem/MeteorDestroyerSystem.gen/sources_1/bd/hdmi/ipshared/6912/src/mult2.sv:121]
+INFO: [Synth 8-6155] done synthesizing module 'mult2_accumulate' (0#1) [c:/Users/Muaz/Documents/MeteorDestroyer/MeteorDestroyerSystem/MeteorDestroyerSystem.gen/sources_1/bd/hdmi/ipshared/6912/src/mult2.sv:77]
+INFO: [Synth 8-6157] synthesizing module 'axi_slave_interface' [c:/Users/Muaz/Documents/MeteorDestroyer/MeteorDestroyerSystem/MeteorDestroyerSystem.gen/sources_1/bd/hdmi/ipshared/6912/src/object_localization.sv:308]
+INFO: [Synth 8-6155] done synthesizing module 'axi_slave_interface' (0#1) [c:/Users/Muaz/Documents/MeteorDestroyer/MeteorDestroyerSystem/MeteorDestroyerSystem.gen/sources_1/bd/hdmi/ipshared/6912/src/object_localization.sv:308]
+INFO: [Synth 8-6155] done synthesizing module 'object_localizer' (0#1) [c:/Users/Muaz/Documents/MeteorDestroyer/MeteorDestroyerSystem/MeteorDestroyerSystem.gen/sources_1/bd/hdmi/ipshared/6912/src/object_localization.sv:1]
+INFO: [Synth 8-6155] done synthesizing module 'hdmi_object_localizer_1_0' (0#1) [c:/Users/Muaz/Documents/MeteorDestroyer/MeteorDestroyerSystem/MeteorDestroyerSystem.gen/sources_1/bd/hdmi/ip/hdmi_object_localizer_1_0/synth/hdmi_object_localizer_1_0.sv:53]
+WARNING: [Synth 8-5856] 3D RAM sensor_locations_reg  for this pattern/configuration is not supported. This will most likely be implemented in registers
+WARNING: [Synth 8-10225] Potential Runtime issue for 3D-RAM or RAM from Record/Structs for RAM  sensor_locations_reg 
+WARNING: [Synth 8-7129] Port S_AXI_WSTRB[3] in module axi_slave_interface is either unconnected or has no load
+WARNING: [Synth 8-7129] Port S_AXI_WSTRB[2] in module axi_slave_interface is either unconnected or has no load
+WARNING: [Synth 8-7129] Port S_AXI_WSTRB[1] in module axi_slave_interface is either unconnected or has no load
+WARNING: [Synth 8-7129] Port S_AXI_WSTRB[0] in module axi_slave_interface is either unconnected or has no load
+---------------------------------------------------------------------------------
+Finished RTL Elaboration : Time (s): cpu = 00:00:08 ; elapsed = 00:00:09 . Memory (MB): peak = 1295.371 ; gain = 22.258
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:08 ; elapsed = 00:00:09 . Memory (MB): peak = 1295.371 ; gain = 22.258
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 1 : Time (s): cpu = 00:00:08 ; elapsed = 00:00:09 . Memory (MB): peak = 1295.371 ; gain = 22.258
+---------------------------------------------------------------------------------
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.050 . Memory (MB): peak = 1295.371 ; gain = 0.000
+INFO: [Netlist 29-17] Analyzing 6 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [Project 1-570] Preparing netlist for logic optimization
+
+Processing XDC Constraints
+Initializing timing engine
+Completed Processing XDC Constraints
+
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 1333.168 ; gain = 0.000
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+Constraint Validation Runtime : Time (s): cpu = 00:00:00 ; elapsed = 00:00:00.058 . Memory (MB): peak = 1333.191 ; gain = 0.023
+INFO: [Designutils 20-5008] Incremental synthesis strategy off
+---------------------------------------------------------------------------------
+Finished Constraint Validation : Time (s): cpu = 00:00:17 ; elapsed = 00:00:18 . Memory (MB): peak = 1333.191 ; gain = 60.078
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Loading Part and Timing Information
+---------------------------------------------------------------------------------
+Loading part: xc7a200tsbg484-1
+---------------------------------------------------------------------------------
+Finished Loading Part and Timing Information : Time (s): cpu = 00:00:17 ; elapsed = 00:00:18 . Memory (MB): peak = 1333.191 ; gain = 60.078
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Applying 'set_property' XDC Constraints
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished applying 'set_property' XDC Constraints : Time (s): cpu = 00:00:17 ; elapsed = 00:00:18 . Memory (MB): peak = 1333.191 ; gain = 60.078
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished RTL Optimization Phase 2 : Time (s): cpu = 00:00:18 ; elapsed = 00:00:19 . Memory (MB): peak = 1333.191 ; gain = 60.078
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start RTL Component Statistics 
+---------------------------------------------------------------------------------
+Detailed RTL Component Info : 
++---Adders : 
+	   2 Input   32 Bit       Adders := 1     
+	   2 Input    4 Bit       Adders := 1     
+	   2 Input    3 Bit       Adders := 1     
++---Registers : 
+	               32 Bit    Registers := 2     
+	               16 Bit    Registers := 69    
+	               15 Bit    Registers := 1     
+	                4 Bit    Registers := 25    
+	                3 Bit    Registers := 1     
+	                2 Bit    Registers := 13    
+	                1 Bit    Registers := 24    
++---Muxes : 
+	   2 Input   32 Bit        Muxes := 1     
+	   5 Input   32 Bit        Muxes := 1     
+	   2 Input   16 Bit        Muxes := 20    
+	   3 Input   16 Bit        Muxes := 1     
+	   4 Input   16 Bit        Muxes := 1     
+	   4 Input   15 Bit        Muxes := 1     
+	   2 Input    4 Bit        Muxes := 22    
+	   2 Input    3 Bit        Muxes := 2     
+	   2 Input    1 Bit        Muxes := 42    
+---------------------------------------------------------------------------------
+Finished RTL Component Statistics 
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Part Resource Summary
+---------------------------------------------------------------------------------
+Part Resources:
+DSPs: 740 (col length:100)
+BRAMs: 730 (col length: RAMB18 100 RAMB36 50)
+---------------------------------------------------------------------------------
+Finished Part Resource Summary
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Cross Boundary and Area Optimization
+---------------------------------------------------------------------------------
+WARNING: [Synth 8-7080] Parallel synthesis criteria is not met
+WARNING: [Synth 8-7129] Port S_AXI_WSTRB[3] in module axi_slave_interface is either unconnected or has no load
+WARNING: [Synth 8-7129] Port S_AXI_WSTRB[2] in module axi_slave_interface is either unconnected or has no load
+WARNING: [Synth 8-7129] Port S_AXI_WSTRB[1] in module axi_slave_interface is either unconnected or has no load
+WARNING: [Synth 8-7129] Port S_AXI_WSTRB[0] in module axi_slave_interface is either unconnected or has no load
+---------------------------------------------------------------------------------
+Finished Cross Boundary and Area Optimization : Time (s): cpu = 00:00:24 ; elapsed = 00:00:25 . Memory (MB): peak = 1333.191 ; gain = 60.078
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Applying XDC Timing Constraints
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Applying XDC Timing Constraints : Time (s): cpu = 00:00:33 ; elapsed = 00:00:34 . Memory (MB): peak = 1336.465 ; gain = 63.352
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Timing Optimization
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Timing Optimization : Time (s): cpu = 00:00:33 ; elapsed = 00:00:35 . Memory (MB): peak = 1337.730 ; gain = 64.617
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Technology Mapping
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Technology Mapping : Time (s): cpu = 00:00:34 ; elapsed = 00:00:35 . Memory (MB): peak = 1366.340 ; gain = 93.227
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Flattening Before IO Insertion
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Final Netlist Cleanup
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished IO Insertion : Time (s): cpu = 00:00:38 ; elapsed = 00:00:39 . Memory (MB): peak = 1366.340 ; gain = 93.227
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Instances
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Instances : Time (s): cpu = 00:00:38 ; elapsed = 00:00:39 . Memory (MB): peak = 1366.340 ; gain = 93.227
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Rebuilding User Hierarchy
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Rebuilding User Hierarchy : Time (s): cpu = 00:00:38 ; elapsed = 00:00:39 . Memory (MB): peak = 1366.340 ; gain = 93.227
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Ports
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Ports : Time (s): cpu = 00:00:38 ; elapsed = 00:00:39 . Memory (MB): peak = 1366.340 ; gain = 93.227
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Handling Custom Attributes
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Handling Custom Attributes : Time (s): cpu = 00:00:38 ; elapsed = 00:00:40 . Memory (MB): peak = 1366.340 ; gain = 93.227
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Renaming Generated Nets
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Finished Renaming Generated Nets : Time (s): cpu = 00:00:38 ; elapsed = 00:00:40 . Memory (MB): peak = 1366.340 ; gain = 93.227
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start ROM, RAM, DSP, Shift Register and Retiming Reporting
+---------------------------------------------------------------------------------
+
+Static Shift Register Report:
++--------------------------+------------------------+--------+-------+--------------+--------------------+-------------------+--------+---------+
+|Module Name               | RTL Name               | Length | Width | Reset Signal | Pull out first Reg | Pull out last Reg | SRL16E | SRLC32E | 
++--------------------------+------------------------+--------+-------+--------------+--------------------+-------------------+--------+---------+
+|hdmi_object_localizer_1_0 | inst/accumulate_reg[3] | 4      | 1     | NO           | NO                 | YES               | 1      | 0       | 
++--------------------------+------------------------+--------+-------+--------------+--------------------+-------------------+--------+---------+
+
+---------------------------------------------------------------------------------
+Finished ROM, RAM, DSP, Shift Register and Retiming Reporting
+---------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+Start Writing Synthesis Report
+---------------------------------------------------------------------------------
+
+DSP Final Report (the ' indicates corresponding REG is set)
++-------------------+--------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+|Module Name        | DSP Mapping  | A Size | B Size | C Size | D Size | P Size | AREG | BREG | CREG | DREG | ADREG | MREG | PREG | 
++-------------------+--------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+|mult2_accumulate   | Dynamic      | -      | -      | -      | -      | 31     | -    | -    | -    | -    | -     | 1    | 1    | 
+|mult2_add          | (C'+(A*B)')' | 30     | 18     | 48     | -      | 31     | 0    | 0    | 0    | -    | -     | 1    | 1    | 
+|mult2_accumulate_0 | Dynamic      | -      | -      | -      | -      | 31     | -    | -    | -    | -    | -     | 1    | 1    | 
+|mult2_add_1        | (C'+(A*B)')' | 30     | 15     | 48     | -      | 31     | 0    | 0    | 0    | -    | -     | 1    | 1    | 
+|mult2_accumulate_2 | Dynamic      | -      | -      | -      | -      | 31     | -    | -    | -    | -    | -     | 1    | 1    | 
+|mult2_add_3        | (C'+(A*B)')' | 30     | 18     | 48     | -      | 31     | 0    | 0    | 0    | -    | -     | 1    | 1    | 
++-------------------+--------------+--------+--------+--------+--------+--------+------+------+------+------+-------+------+------+
+
+
+Report BlackBoxes: 
++-+--------------+----------+
+| |BlackBox name |Instances |
++-+--------------+----------+
++-+--------------+----------+
+
+Report Cell Usage: 
++------+--------+------+
+|      |Cell    |Count |
++------+--------+------+
+|1     |CARRY4  |     8|
+|2     |DSP48E1 |     6|
+|4     |LUT1    |     4|
+|5     |LUT2    |    82|
+|6     |LUT3    |   292|
+|7     |LUT4    |    77|
+|8     |LUT5    |    54|
+|9     |LUT6    |   176|
+|10    |MUXF7   |    30|
+|11    |SRL16E  |     1|
+|12    |FDRE    |   488|
+|13    |FDSE    |   523|
++------+--------+------+
+---------------------------------------------------------------------------------
+Finished Writing Synthesis Report : Time (s): cpu = 00:00:38 ; elapsed = 00:00:40 . Memory (MB): peak = 1366.340 ; gain = 93.227
+---------------------------------------------------------------------------------
+Synthesis finished with 0 errors, 0 critical warnings and 5 warnings.
+Synthesis Optimization Runtime : Time (s): cpu = 00:00:27 ; elapsed = 00:00:37 . Memory (MB): peak = 1366.340 ; gain = 55.406
+Synthesis Optimization Complete : Time (s): cpu = 00:00:38 ; elapsed = 00:00:40 . Memory (MB): peak = 1366.340 ; gain = 93.227
+INFO: [Project 1-571] Translating synthesized netlist
+Netlist sorting complete. Time (s): cpu = 00:00:01 ; elapsed = 00:00:00.039 . Memory (MB): peak = 1366.340 ; gain = 0.000
+INFO: [Netlist 29-17] Analyzing 44 Unisim elements for replacement
+INFO: [Netlist 29-28] Unisim Transformation completed in 0 CPU seconds
+INFO: [Project 1-570] Preparing netlist for logic optimization
+INFO: [Opt 31-138] Pushed 0 inverter(s) to 0 load pin(s).
+Netlist sorting complete. Time (s): cpu = 00:00:00 ; elapsed = 00:00:00 . Memory (MB): peak = 1388.664 ; gain = 0.000
+INFO: [Project 1-111] Unisim Transformation Summary:
+No Unisim elements were transformed.
+
+Synth Design complete, checksum: b1b9dc
+INFO: [Common 17-83] Releasing license: Synthesis
+46 Infos, 56 Warnings, 0 Critical Warnings and 0 Errors encountered.
+synth_design completed successfully
+synth_design: Time (s): cpu = 00:00:43 ; elapsed = 00:00:52 . Memory (MB): peak = 1388.664 ; gain = 115.551
+INFO: [Common 17-1381] The checkpoint 'C:/Users/Muaz/Documents/MeteorDestroyer/MeteorDestroyerSystem/MeteorDestroyerSystem.runs/hdmi_object_localizer_1_0_synth_1/hdmi_object_localizer_1_0.dcp' has been generated.
+INFO: [Coretcl 2-1648] Added synthesis output to IP cache for IP hdmi_object_localizer_1_0, cache-ID = edecdb38b946f11d
+INFO: [Coretcl 2-1174] Renamed 14 cell refs.
+INFO: [Common 17-1381] The checkpoint 'C:/Users/Muaz/Documents/MeteorDestroyer/MeteorDestroyerSystem/MeteorDestroyerSystem.runs/hdmi_object_localizer_1_0_synth_1/hdmi_object_localizer_1_0.dcp' has been generated.
+INFO: [runtcl-4] Executing : report_utilization -file hdmi_object_localizer_1_0_utilization_synth.rpt -pb hdmi_object_localizer_1_0_utilization_synth.pb
+INFO: [Common 17-206] Exiting Vivado at Mon Mar 17 19:27:58 2025...
