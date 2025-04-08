@@ -1,0 +1,13 @@
+#-----------------------------------------------------------
+# Vivado v2022.1 (64-bit)
+# SW Build 3526262 on Mon Apr 18 15:48:16 MDT 2022
+# IP Build 3524634 on Mon Apr 18 20:55:01 MDT 2022
+# Start of session at: Fri Mar 28 20:17:28 2025
+# Process ID: 128308
+# Current directory: C:/Users/Muaz/Documents/MeteorDestroyer/Parser/Parser.runs/parser_microblaze_0_2_synth_1
+# Command line: vivado.exe -log parser_microblaze_0_2.vds -product Vivado -mode batch -messageDb vivado.pb -notrace -source parser_microblaze_0_2.tcl
+# Log file: C:/Users/Muaz/Documents/MeteorDestroyer/Parser/Parser.runs/parser_microblaze_0_2_synth_1/parser_microblaze_0_2.vds
+# Journal file: C:/Users/Muaz/Documents/MeteorDestroyer/Parser/Parser.runs/parser_microblaze_0_2_synth_1\vivado.jou
+# Running On: DESKTOP-BINRERU, OS: Windows, CPU Frequency: 3993 MHz, CPU Physical cores: 12, Host memory: 17119 MB
+#-----------------------------------------------------------
+source parser_microblaze_0_2.tcl -notrace

@@ -1,0 +1,25 @@
+14:26:09 **** Incremental Build of configuration Debug for project parser_app ****
+make all 
+'Building file: ../src/helloworld.c'
+'Invoking: MicroBlaze gcc compiler'
+mb-gcc -Wall -O0 -g3 -c -fmessage-length=0 -MT"src/helloworld.o" -IC:/Users/marko/workspace/hdmi/parser/export/parser/sw/parser/standalone_domain/bspinclude/include -mlittle-endian -mcpu=v11.0 -mxl-soft-mul -mhard-float -Wl,--no-relax -ffunction-sections -fdata-sections -MMD -MP -MF"src/helloworld.d" -MT"src/helloworld.o" -o "src/helloworld.o" "../src/helloworld.c"
+../src/helloworld.c: In function 'main':
+../src/helloworld.c:107:17: warning: implicit declaration of function 'usleep' [-Wimplicit-function-declaration]
+  107 |                 usleep(1000);
+      |                 ^~~~~~
+'Finished building: ../src/helloworld.c'
+' '
+'Building target: parser_app.elf'
+'Invoking: MicroBlaze gcc linker'
+mb-gcc -Wl,-T -Wl,../src/lscript.ld -LC:/Users/marko/workspace/hdmi/parser/export/parser/sw/parser/standalone_domain/bsplib/lib -mlittle-endian -mcpu=v11.0 -mxl-soft-mul -mhard-float -Wl,--no-relax -Wl,--gc-sections -o "parser_app.elf"  ./src/helloworld.o ./src/platform.o   -Wl,--start-group,-lxil,-lgcc,-lc,--end-group
+'Finished building target: parser_app.elf'
+' '
+'Invoking: MicroBlaze Print Size'
+mb-size parser_app.elf  |tee "parser_app.elf.size"
+   text	   data	    bss	    dec	    hex	filename
+   6840	    272	   3104	  10216	   27e8	parser_app.elf
+'Finished building: parser_app.elf.size'
+' '
+
+14:26:10 Build Finished (took 1s.82ms)
+

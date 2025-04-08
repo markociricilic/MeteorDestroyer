@@ -1,8 +1,8 @@
 Copyright 1986-2022 Xilinx, Inc. All Rights Reserved.
 -----------------------------------------------------------------------------------------------------------------------
 | Tool Version : Vivado v.2022.1 (win64) Build 3526262 Mon Apr 18 15:48:16 MDT 2022
-| Date         : Sun Mar 16 05:55:49 2025
-| Host         : DESKTOP-BINRERU running 64-bit major release  (build 9200)
+| Date         : Mon Mar 31 17:12:33 2025
+| Host         : MUGEN running 64-bit major release  (build 9200)
 | Command      : report_utilization -file parser_wrapper_utilization_synth.rpt -pb parser_wrapper_utilization_synth.pb
 | Design       : parser_wrapper
 | Device       : xc7a200tsbg484-1
@@ -91,7 +91,7 @@ Table of Contents
 +-----------------------------+------+-------+------------+-----------+-------+
 |          Site Type          | Used | Fixed | Prohibited | Available | Util% |
 +-----------------------------+------+-------+------------+-----------+-------+
-| Bonded IOB                  |    7 |     0 |          0 |       285 |  2.46 |
+| Bonded IOB                  |   18 |     0 |          0 |       285 |  6.32 |
 | Bonded IPADs                |    0 |     0 |          0 |        14 |  0.00 |
 | Bonded OPADs                |    0 |     0 |          0 |         8 |  0.00 |
 | PHY_CONTROL                 |    0 |     0 |          0 |        10 |  0.00 |
@@ -150,32 +150,32 @@ Table of Contents
 +----------+------+---------------------+
 | Ref Name | Used | Functional Category |
 +----------+------+---------------------+
-| IBUF     |    5 |                  IO |
-| OBUF     |    2 |                  IO |
+| IBUF     |   14 |                  IO |
+| OBUF     |    4 |                  IO |
 +----------+------+---------------------+
 
 
 8. Black Boxes
 --------------
 
-+-----------------------------+------+
-|           Ref Name          | Used |
-+-----------------------------+------+
-| parser_xbar_0               |    1 |
-| parser_rst_clk_wiz_0_100M_0 |    1 |
-| parser_object_localizer_0_0 |    1 |
-| parser_microblaze_0_0       |    1 |
-| parser_mdm_1_4              |    1 |
-| parser_lmb_bram_4           |    1 |
-| parser_ilmb_v10_4           |    1 |
-| parser_ilmb_bram_if_cntlr_4 |    1 |
-| parser_ila_0_1              |    1 |
-| parser_dlmb_v10_4           |    1 |
-| parser_dlmb_bram_if_cntlr_4 |    1 |
-| parser_clk_wiz_0_0          |    1 |
-| parser_axi_uartlite_0_0     |    1 |
-| parser_array_parser_1_0     |    1 |
-+-----------------------------+------+
++---------------------------------+------+
+|             Ref Name            | Used |
++---------------------------------+------+
+| parser_xbar_0                   |    1 |
+| parser_rst_clk_wiz_0_100M_0     |    1 |
+| parser_proportional_control_0_0 |    1 |
+| parser_object_localizer_1_0     |    1 |
+| parser_microblaze_0_2           |    1 |
+| parser_mdm_1_5                  |    1 |
+| parser_lmb_bram_5               |    1 |
+| parser_ilmb_v10_5               |    1 |
+| parser_ilmb_bram_if_cntlr_5     |    1 |
+| parser_dlmb_v10_5               |    1 |
+| parser_dlmb_bram_if_cntlr_5     |    1 |
+| parser_clk_wiz_0_0              |    1 |
+| parser_axi_uartlite_0_0         |    1 |
+| parser_array_parser_0_0         |    1 |
++---------------------------------+------+
 
 
 9. Instantiated Netlists

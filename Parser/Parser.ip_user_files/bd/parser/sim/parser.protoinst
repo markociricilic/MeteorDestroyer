@@ -9,12 +9,22 @@
 						"ACLK": { "actual": "M00_ACLK"},
 						"ARADDR": { "actual": "M00_AXI_araddr[31:0]"},
 						"ARESETN": { "actual": "ARESETN"},
-						"ARREADY": { "actual": "M00_AXI_arready[0:0]"},
-						"ARVALID": { "actual": "M00_AXI_arvalid[0:0]"},
+						"ARREADY": { "actual": "M00_AXI_arready"},
+						"ARVALID": { "actual": "M00_AXI_arvalid"},
+						"AWADDR": { "actual": "M00_AXI_awaddr[31:0]"},
+						"AWREADY": { "actual": "M00_AXI_awready"},
+						"AWVALID": { "actual": "M00_AXI_awvalid"},
+						"BREADY": { "actual": "M00_AXI_bready"},
+						"BRESP": { "actual": "M00_AXI_bresp[1:0]"},
+						"BVALID": { "actual": "M00_AXI_bvalid"},
 						"RDATA": { "actual": "M00_AXI_rdata[31:0]"},
-						"RREADY": { "actual": "M00_AXI_rready[0:0]"},
+						"RREADY": { "actual": "M00_AXI_rready"},
 						"RRESP": { "actual": "M00_AXI_rresp[1:0]"},
-						"RVALID": { "actual": "M00_AXI_rvalid[0:0]"}
+						"RVALID": { "actual": "M00_AXI_rvalid"},
+						"WDATA": { "actual": "M00_AXI_wdata[31:0]"},
+						"WREADY": { "actual": "M00_AXI_wready"},
+						"WSTRB": { "actual": "M00_AXI_wstrb[3:0]"},
+						"WVALID": { "actual": "M00_AXI_wvalid"}
 					}
 				},
 				"/axi_interconnect_0/M01_AXI": {
@@ -75,10 +85,20 @@
 						"ARESETN": { "actual": "M_ARESETN"},
 						"ARREADY": { "actual": "M_AXI_arready"},
 						"ARVALID": { "actual": "M_AXI_arvalid"},
+						"AWADDR": { "actual": "M_AXI_awaddr[31:0]"},
+						"AWREADY": { "actual": "M_AXI_awready"},
+						"AWVALID": { "actual": "M_AXI_awvalid"},
+						"BREADY": { "actual": "M_AXI_bready"},
+						"BRESP": { "actual": "M_AXI_bresp[1:0]"},
+						"BVALID": { "actual": "M_AXI_bvalid"},
 						"RDATA": { "actual": "M_AXI_rdata[31:0]"},
 						"RREADY": { "actual": "M_AXI_rready"},
 						"RRESP": { "actual": "M_AXI_rresp[1:0]"},
-						"RVALID": { "actual": "M_AXI_rvalid"}
+						"RVALID": { "actual": "M_AXI_rvalid"},
+						"WDATA": { "actual": "M_AXI_wdata[31:0]"},
+						"WREADY": { "actual": "M_AXI_wready"},
+						"WSTRB": { "actual": "M_AXI_wstrb[3:0]"},
+						"WVALID": { "actual": "M_AXI_wvalid"}
 					}
 				},
 				"/axi_interconnect_0/m00_couplers/S_AXI": {
@@ -89,10 +109,20 @@
 						"ARESETN": { "actual": "S_ARESETN"},
 						"ARREADY": { "actual": "S_AXI_arready"},
 						"ARVALID": { "actual": "S_AXI_arvalid"},
+						"AWADDR": { "actual": "S_AXI_awaddr[31:0]"},
+						"AWREADY": { "actual": "S_AXI_awready"},
+						"AWVALID": { "actual": "S_AXI_awvalid"},
+						"BREADY": { "actual": "S_AXI_bready"},
+						"BRESP": { "actual": "S_AXI_bresp[1:0]"},
+						"BVALID": { "actual": "S_AXI_bvalid"},
 						"RDATA": { "actual": "S_AXI_rdata[31:0]"},
 						"RREADY": { "actual": "S_AXI_rready"},
 						"RRESP": { "actual": "S_AXI_rresp[1:0]"},
-						"RVALID": { "actual": "S_AXI_rvalid"}
+						"RVALID": { "actual": "S_AXI_rvalid"},
+						"WDATA": { "actual": "S_AXI_wdata[31:0]"},
+						"WREADY": { "actual": "S_AXI_wready"},
+						"WSTRB": { "actual": "S_AXI_wstrb[3:0]"},
+						"WVALID": { "actual": "S_AXI_wvalid"}
 					}
 				},
 				"/axi_interconnect_0/m01_couplers/M_AXI": {
@@ -323,7 +353,7 @@
 						"WVALID": { "actual": "M_AXI_DP_WVALID"}
 					}
 				},
-				"/object_localizer_0/S_AXI": {
+				"/object_localizer_1/S_AXI": {
 					"interface": "xilinx.com:interface:aximm:1.0",
 					"ports": {
 						"ACLK": { "actual": "clk"},
@@ -331,10 +361,20 @@
 						"ARESETN": { "actual": "rstn"},
 						"ARREADY": { "actual": "S_AXI_ARREADY"},
 						"ARVALID": { "actual": "S_AXI_ARVALID"},
+						"AWADDR": { "actual": "S_AXI_AWADDR"},
+						"AWREADY": { "actual": "S_AXI_AWREADY"},
+						"AWVALID": { "actual": "S_AXI_AWVALID"},
+						"BREADY": { "actual": "S_AXI_BREADY"},
+						"BRESP": { "actual": "S_AXI_BRESP"},
+						"BVALID": { "actual": "S_AXI_BVALID"},
 						"RDATA": { "actual": "S_AXI_RDATA"},
 						"RREADY": { "actual": "S_AXI_RREADY"},
 						"RRESP": { "actual": "S_AXI_RRESP"},
-						"RVALID": { "actual": "S_AXI_RVALID"}
+						"RVALID": { "actual": "S_AXI_RVALID"},
+						"WDATA": { "actual": "S_AXI_WDATA"},
+						"WREADY": { "actual": "S_AXI_WREADY"},
+						"WSTRB": { "actual": "S_AXI_WSTRB"},
+						"WVALID": { "actual": "S_AXI_WVALID"}
 					}
 				}
 			}

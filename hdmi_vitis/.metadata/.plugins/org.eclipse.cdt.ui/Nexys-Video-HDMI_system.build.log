@@ -1,0 +1,6 @@
+15:04:04 **** Incremental Build of configuration Debug for project Nexys-Video-HDMI_system ****
+make all 
+Skipping SD card image generation. Reason: "The system project only has applications for microblaze processors."
+
+15:04:04 Build Finished (took 251ms)
+

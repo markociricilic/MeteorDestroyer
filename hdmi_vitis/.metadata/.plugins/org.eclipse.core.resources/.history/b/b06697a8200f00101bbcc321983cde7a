@@ -1,0 +1,1054 @@
+/************************************************************************/
+/*																		*/
+/*	video_demo.c	--	Nexys Video HDMI demonstration 						*/
+/*																		*/
+/************************************************************************/
+/*	Author: Sam Bobrowicz												*/
+/*	Copyright 2015, Digilent Inc.										*/
+/************************************************************************/
+/*  Module Description: 												*/
+/*																		*/
+/*		This file contains code for running a demonstration of the		*/
+/*		Video input and output capabilities on the Nexys Video. It is a good	*/
+/*		example of how to properly use the display_ctrl and				*/
+/*		video_capture drivers.											*/
+/*																		*/
+/*																		*/
+/************************************************************************/
+/*  Revision History:													*/
+/* 																		*/
+/*		11/25/2015(SamB): Created										*/
+/*		03/31/2017(ArtVVB): Updated sleep functions for 2016.4			*/
+/*																		*/
+/************************************************************************/
+
+/* ------------------------------------------------------------ */
+/*				Include File Definitions						*/
+/* ------------------------------------------------------------ */
+
+#include "video_demo.h"
+#include "video_capture/video_capture.h"
+#include "display_ctrl/display_ctrl.h"
+#include "intc/intc.h"
+#include <stdio.h>
+#include "xuartlite_l.h"
+//#include "xuartps.h"
+#include "math.h"
+#include <ctype.h>
+#include <stdlib.h>
+#include "xil_types.h"
+#include "xil_cache.h"
+#include "xparameters.h"
+#include "sleep.h"
+/*
+ * XPAR redefines
+ */
+#define DYNCLK_BASEADDR XPAR_AXI_DYNCLK_0_S_AXI_LITE_BASEADDR
+#define VGA_VDMA_ID XPAR_AXIVDMA_0_DEVICE_ID
+#define DISP_VTC_ID XPAR_VTC_0_DEVICE_ID
+#define VID_VTC_ID XPAR_VTC_1_DEVICE_ID
+#define VID_GPIO_ID XPAR_AXI_GPIO_VIDEO_DEVICE_ID
+#define VID_VTC_IRPT_ID XPAR_INTC_0_VTC_1_VEC_ID
+#define VID_GPIO_IRPT_ID XPAR_INTC_0_GPIO_0_VEC_ID
+#define SCU_TIMER_ID XPAR_AXI_TIMER_0_DEVICE_ID
+#define UART_BASEADDR XPAR_UARTLITE_0_BASEADDR
+#define	BTN_GPIO_IRPT_ID XPAR_INTC_0_GPIO_1_VEC_ID
+#define BTN_BASE_ADDR 		0x40010000
+#define SENSOR_READ_BASE_ADDR    XPAR_OBJECT_LOCALIZER_1_BASEADDR
+#define SENSOR_LOC_BASE_ADDR    XPAR_OBJECT_LOCALIZER_1_BASEADDR + 16
+#define SENSOR_TILT_BASE_ADDR   XPAR_OBJECT_LOCALIZER_1_BASEADDR + 15
+#define X_COORDINATE		    XPAR_OBJECT_LOCALIZER_1_BASEADDR + 12
+#define Y_COORDINATE 		    X_COORDINATE + 1
+#define Z_COORDINATE 		    X_COORDINATE + 2
+
+/* ------------------------------------------------------------ */
+/*				Global Variables								*/
+/* ------------------------------------------------------------ */
+
+/*
+ * Display and Video Driver structs
+ */
+DisplayCtrl dispCtrl;
+XAxiVdma vdma;
+VideoCapture videoCapt;
+INTC intc;
+char fRefresh; //flag used to trigger a refresh of the Menu on video detect
+XGpio sUserIO;
+
+/*
+ * Framebuffers for video data
+ */
+
+u8 frameBuf[DISPLAY_NUM_FRAMES][DEMO_MAX_FRAME] __attribute__((aligned(0x20)));
+u8 *pFrames[DISPLAY_NUM_FRAMES]; //array of pointers to the frame buffers
+
+/*
+ * marciric : Allocate a separate background buffer to store the static grid.
+ */
+u8 gridFrame[DEMO_MAX_FRAME] __attribute__((aligned(0x20)));
+
+/*
+ * Interrupt vector table
+ */
+const ivt_t ivt[] = {
+	videoGpioIvt(VID_GPIO_IRPT_ID, &videoCapt),
+	videoVtcIvt(VID_VTC_IRPT_ID, &(videoCapt.vtc)),
+	btnGpioIvt(BTN_GPIO_IRPT_ID, &sUserIO)	// marciric : button interrupt
+};
+
+uint8_t font8x8_basic[128][8] = {
+    { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 },   // U+0000 (nul)
+    { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 },   // U+0001
+    { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 },   // U+0002
+    { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 },   // U+0003
+    { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 },   // U+0004
+    { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 },   // U+0005
+    { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 },   // U+0006
+    { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 },   // U+0007
+    { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 },   // U+0008
+    { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 },   // U+0009
+    { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 },   // U+000A
+    { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 },   // U+000B
+    { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 },   // U+000C
+    { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 },   // U+000D
+    { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 },   // U+000E
+    { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 },   // U+000F
+    { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 },   // U+0010
+    { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 },   // U+0011
+    { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 },   // U+0012
+    { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 },   // U+0013
+    { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 },   // U+0014
+    { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 },   // U+0015
+    { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 },   // U+0016
+    { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 },   // U+0017
+    { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 },   // U+0018
+    { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 },   // U+0019
+    { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 },   // U+001A
+    { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 },   // U+001B
+    { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 },   // U+001C
+    { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 },   // U+001D
+    { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 },   // U+001E
+    { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 },   // U+001F
+    { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 },   // U+0020 (space)
+    { 0x00, 0x00, 0x06, 0x5F, 0x5F, 0x06, 0x00, 0x00 },   // U+0021 (!)
+    { 0x00, 0x03, 0x03, 0x00, 0x03, 0x03, 0x00, 0x00 },   // U+0022 (")
+    { 0x14, 0x7F, 0x7F, 0x14, 0x7F, 0x7F, 0x14, 0x00 },   // U+0023 (#)
+    { 0x24, 0x2E, 0x6B, 0x6B, 0x3A, 0x12, 0x00, 0x00 },   // U+0024 ($)
+    { 0x46, 0x66, 0x30, 0x18, 0x0C, 0x66, 0x62, 0x00 },   // U+0025 (%)
+    { 0x30, 0x7A, 0x4F, 0x5D, 0x37, 0x7A, 0x48, 0x00 },   // U+0026 (&)
+    { 0x04, 0x07, 0x03, 0x00, 0x00, 0x00, 0x00, 0x00 },   // U+0027 (')
+    { 0x00, 0x1C, 0x3E, 0x63, 0x41, 0x00, 0x00, 0x00 },   // U+0028 (()
+    { 0x00, 0x41, 0x63, 0x3E, 0x1C, 0x00, 0x00, 0x00 },   // U+0029 ())
+    { 0x08, 0x2A, 0x3E, 0x1C, 0x1C, 0x3E, 0x2A, 0x08 },   // U+002A (*)
+    { 0x08, 0x08, 0x3E, 0x3E, 0x08, 0x08, 0x00, 0x00 },   // U+002B (+)
+    { 0x00, 0x80, 0xE0, 0x60, 0x00, 0x00, 0x00, 0x00 },   // U+002C (,)
+    { 0x08, 0x08, 0x08, 0x08, 0x08, 0x08, 0x00, 0x00 },   // U+002D (-)
+    { 0x00, 0x00, 0x60, 0x60, 0x00, 0x00, 0x00, 0x00 },   // U+002E (.)
+    { 0x60, 0x30, 0x18, 0x0C, 0x06, 0x03, 0x01, 0x00 },   // U+002F (/)
+    { 0x3E, 0x7F, 0x71, 0x59, 0x4D, 0x7F, 0x3E, 0x00 },   // U+0030 (0)
+    { 0x40, 0x42, 0x7F, 0x7F, 0x40, 0x40, 0x00, 0x00 },   // U+0031 (1)
+    { 0x62, 0x73, 0x59, 0x49, 0x6F, 0x66, 0x00, 0x00 },   // U+0032 (2)
+    { 0x22, 0x63, 0x49, 0x49, 0x7F, 0x36, 0x00, 0x00 },   // U+0033 (3)
+    { 0x18, 0x1C, 0x16, 0x53, 0x7F, 0x7F, 0x50, 0x00 },   // U+0034 (4)
+    { 0x27, 0x67, 0x45, 0x45, 0x7D, 0x39, 0x00, 0x00 },   // U+0035 (5)
+    { 0x3C, 0x7E, 0x4B, 0x49, 0x79, 0x30, 0x00, 0x00 },   // U+0036 (6)
+    { 0x03, 0x03, 0x71, 0x79, 0x0F, 0x07, 0x00, 0x00 },   // U+0037 (7)
+    { 0x36, 0x7F, 0x49, 0x49, 0x7F, 0x36, 0x00, 0x00 },   // U+0038 (8)
+    { 0x06, 0x4F, 0x49, 0x69, 0x3F, 0x1E, 0x00, 0x00 },   // U+0039 (9)
+    { 0x00, 0x00, 0x66, 0x66, 0x00, 0x00, 0x00, 0x00 },   // U+003A (:)
+    { 0x00, 0x80, 0xE6, 0x66, 0x00, 0x00, 0x00, 0x00 },   // U+003B (;)
+    { 0x08, 0x1C, 0x36, 0x63, 0x41, 0x00, 0x00, 0x00 },   // U+003C (<)
+    { 0x24, 0x24, 0x24, 0x24, 0x24, 0x24, 0x00, 0x00 },   // U+003D (=)
+    { 0x00, 0x41, 0x63, 0x36, 0x1C, 0x08, 0x00, 0x00 },   // U+003E (>)
+    { 0x02, 0x03, 0x51, 0x59, 0x0F, 0x06, 0x00, 0x00 },   // U+003F (?)
+    { 0x3E, 0x7F, 0x41, 0x5D, 0x5D, 0x1F, 0x1E, 0x00 },   // U+0040 (@)
+    { 0x7C, 0x7E, 0x13, 0x13, 0x7E, 0x7C, 0x00, 0x00 },   // U+0041 (A)
+    { 0x41, 0x7F, 0x7F, 0x49, 0x49, 0x7F, 0x36, 0x00 },   // U+0042 (B)
+    { 0x1C, 0x3E, 0x63, 0x41, 0x41, 0x63, 0x22, 0x00 },   // U+0043 (C)
+    { 0x41, 0x7F, 0x7F, 0x41, 0x63, 0x3E, 0x1C, 0x00 },   // U+0044 (D)
+    { 0x41, 0x7F, 0x7F, 0x49, 0x5D, 0x41, 0x63, 0x00 },   // U+0045 (E)
+    { 0x41, 0x7F, 0x7F, 0x49, 0x1D, 0x01, 0x03, 0x00 },   // U+0046 (F)
+    { 0x1C, 0x3E, 0x63, 0x41, 0x51, 0x73, 0x72, 0x00 },   // U+0047 (G)
+    { 0x7F, 0x7F, 0x08, 0x08, 0x7F, 0x7F, 0x00, 0x00 },   // U+0048 (H)
+    { 0x00, 0x41, 0x7F, 0x7F, 0x41, 0x00, 0x00, 0x00 },   // U+0049 (I)
+    { 0x30, 0x70, 0x40, 0x41, 0x7F, 0x3F, 0x01, 0x00 },   // U+004A (J)
+    { 0x41, 0x7F, 0x7F, 0x08, 0x1C, 0x77, 0x63, 0x00 },   // U+004B (K)
+    { 0x41, 0x7F, 0x7F, 0x41, 0x40, 0x60, 0x70, 0x00 },   // U+004C (L)
+    { 0x7F, 0x7F, 0x0E, 0x1C, 0x0E, 0x7F, 0x7F, 0x00 },   // U+004D (M)
+    { 0x7F, 0x7F, 0x06, 0x0C, 0x18, 0x7F, 0x7F, 0x00 },   // U+004E (N)
+    { 0x1C, 0x3E, 0x63, 0x41, 0x63, 0x3E, 0x1C, 0x00 },   // U+004F (O)
+    { 0x41, 0x7F, 0x7F, 0x49, 0x09, 0x0F, 0x06, 0x00 },   // U+0050 (P)
+    { 0x1E, 0x3F, 0x21, 0x71, 0x7F, 0x5E, 0x00, 0x00 },   // U+0051 (Q)
+    { 0x41, 0x7F, 0x7F, 0x09, 0x19, 0x7F, 0x66, 0x00 },   // U+0052 (R)
+    { 0x26, 0x6F, 0x4D, 0x59, 0x73, 0x32, 0x00, 0x00 },   // U+0053 (S)
+    { 0x03, 0x41, 0x7F, 0x7F, 0x41, 0x03, 0x00, 0x00 },   // U+0054 (T)
+    { 0x7F, 0x7F, 0x40, 0x40, 0x7F, 0x7F, 0x00, 0x00 },   // U+0055 (U)
+    { 0x1F, 0x3F, 0x60, 0x60, 0x3F, 0x1F, 0x00, 0x00 },   // U+0056 (V)
+    { 0x7F, 0x7F, 0x30, 0x18, 0x30, 0x7F, 0x7F, 0x00 },   // U+0057 (W)
+    { 0x43, 0x67, 0x3C, 0x18, 0x3C, 0x67, 0x43, 0x00 },   // U+0058 (X)
+    { 0x07, 0x4F, 0x78, 0x78, 0x4F, 0x07, 0x00, 0x00 },   // U+0059 (Y)
+    { 0x47, 0x63, 0x71, 0x59, 0x4D, 0x67, 0x73, 0x00 },   // U+005A (Z)
+    { 0x00, 0x7F, 0x7F, 0x41, 0x41, 0x00, 0x00, 0x00 },   // U+005B ([)
+    { 0x01, 0x03, 0x06, 0x0C, 0x18, 0x30, 0x60, 0x00 },   // U+005C (\)
+    { 0x00, 0x41, 0x41, 0x7F, 0x7F, 0x00, 0x00, 0x00 },   // U+005D (])
+    { 0x08, 0x0C, 0x06, 0x03, 0x06, 0x0C, 0x08, 0x00 },   // U+005E (^)
+    { 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80, 0x80 },   // U+005F (_)
+    { 0x00, 0x00, 0x03, 0x07, 0x04, 0x00, 0x00, 0x00 },   // U+0060 (`)
+    { 0x20, 0x74, 0x54, 0x54, 0x3C, 0x78, 0x40, 0x00 },   // U+0061 (a)
+    { 0x41, 0x7F, 0x3F, 0x48, 0x48, 0x78, 0x30, 0x00 },   // U+0062 (b)
+    { 0x38, 0x7C, 0x44, 0x44, 0x6C, 0x28, 0x00, 0x00 },   // U+0063 (c)
+    { 0x30, 0x78, 0x48, 0x49, 0x3F, 0x7F, 0x40, 0x00 },   // U+0064 (d)
+    { 0x38, 0x7C, 0x54, 0x54, 0x5C, 0x18, 0x00, 0x00 },   // U+0065 (e)
+    { 0x48, 0x7E, 0x7F, 0x49, 0x03, 0x02, 0x00, 0x00 },   // U+0066 (f)
+    { 0x98, 0xBC, 0xA4, 0xA4, 0xF8, 0x7C, 0x04, 0x00 },   // U+0067 (g)
+    { 0x41, 0x7F, 0x7F, 0x08, 0x04, 0x7C, 0x78, 0x00 },   // U+0068 (h)
+    { 0x00, 0x44, 0x7D, 0x7D, 0x40, 0x00, 0x00, 0x00 },   // U+0069 (i)
+    { 0x60, 0xE0, 0x80, 0x80, 0xFD, 0x7D, 0x00, 0x00 },   // U+006A (j)
+    { 0x41, 0x7F, 0x7F, 0x10, 0x38, 0x6C, 0x44, 0x00 },   // U+006B (k)
+    { 0x00, 0x41, 0x7F, 0x7F, 0x40, 0x00, 0x00, 0x00 },   // U+006C (l)
+    { 0x7C, 0x7C, 0x18, 0x38, 0x1C, 0x7C, 0x78, 0x00 },   // U+006D (m)
+    { 0x7C, 0x7C, 0x04, 0x04, 0x7C, 0x78, 0x00, 0x00 },   // U+006E (n)
+    { 0x38, 0x7C, 0x44, 0x44, 0x7C, 0x38, 0x00, 0x00 },   // U+006F (o)
+    { 0x84, 0xFC, 0xF8, 0xA4, 0x24, 0x3C, 0x18, 0x00 },   // U+0070 (p)
+    { 0x18, 0x3C, 0x24, 0xA4, 0xF8, 0xFC, 0x84, 0x00 },   // U+0071 (q)
+    { 0x44, 0x7C, 0x78, 0x4C, 0x04, 0x1C, 0x18, 0x00 },   // U+0072 (r)
+    { 0x48, 0x5C, 0x54, 0x54, 0x74, 0x24, 0x00, 0x00 },   // U+0073 (s)
+    { 0x00, 0x04, 0x3E, 0x7F, 0x44, 0x24, 0x00, 0x00 },   // U+0074 (t)
+    { 0x3C, 0x7C, 0x40, 0x40, 0x3C, 0x7C, 0x40, 0x00 },   // U+0075 (u)
+    { 0x1C, 0x3C, 0x60, 0x60, 0x3C, 0x1C, 0x00, 0x00 },   // U+0076 (v)
+    { 0x3C, 0x7C, 0x70, 0x38, 0x70, 0x7C, 0x3C, 0x00 },   // U+0077 (w)
+    { 0x44, 0x6C, 0x38, 0x10, 0x38, 0x6C, 0x44, 0x00 },   // U+0078 (x)
+    { 0x9C, 0xBC, 0xA0, 0xA0, 0xFC, 0x7C, 0x00, 0x00 },   // U+0079 (y)
+    { 0x4C, 0x64, 0x74, 0x5C, 0x4C, 0x64, 0x00, 0x00 },   // U+007A (z)
+    { 0x08, 0x08, 0x3E, 0x77, 0x41, 0x41, 0x00, 0x00 },   // U+007B ({)
+    { 0x00, 0x00, 0x00, 0x77, 0x77, 0x00, 0x00, 0x00 },   // U+007C (|)
+    { 0x41, 0x41, 0x77, 0x3E, 0x08, 0x08, 0x00, 0x00 },   // U+007D (})
+    { 0x02, 0x03, 0x01, 0x03, 0x02, 0x03, 0x01, 0x00 },   // U+007E (~)
+    { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 }    // U+007F
+};
+
+/* ------------------------------------------------------------ */
+/*				Procedure Definitions							*/
+/* ------------------------------------------------------------ */
+
+#define MAX_LANDING_HISTORY 20
+#define TRAJECTORY_BUFFER_SIZE 80
+
+// Struct for landing position
+typedef struct {
+    int x2; 		// virtual x coordinate destination (mm)
+    int y2;			// virtual y coordinate destination (mm)
+} LandingPos;
+
+// Struct for a trajectory point
+typedef struct {
+    int x; 			// virtual x coordinate (mm)
+    int y; 			// virtual y coordinate (mm)
+    int z;			// virtual z coordinate (mm)
+} TrajectoryPoint;
+
+LandingPos landing_history[MAX_LANDING_HISTORY];
+int landing_count = 0;
+
+TrajectoryPoint trajectory_buffer;
+int trajectory_index = 0; 				// Number of points currently stored
+volatile int trajectory_complete = 0;	// Flag for completed trajectory
+
+//---------------------------------------------------------------------
+//void addTrajectoryPoint(int x, int y)
+//{
+//    if (trajectory_index < TRAJECTORY_BUFFER_SIZE) {
+//        trajectory_buffer[0].x = x;
+//        trajectory_buffer[0].y = y;
+//        trajectory_index++;
+//    }
+//}
+
+// Draw a character using an 8x8 bitmap font
+void drawChar(u8 *frame, int width, int height, int stride, int pixel_x, int pixel_y,
+				char ch, u8 color_r, u8 color_g, u8 color_b, int scale)
+{
+	// For an 8x8 font, iterate over each row and column of the character.
+	for (int row = 0; row < 8; row++) {
+		uint8_t row_data = font8x8_basic[(int)ch][row];
+		for (int col = 0; col < 8; col++) {
+			if (row_data & (1 << col)) {
+				int base_x = pixel_x + row * scale;
+				int base_y = pixel_y + col * scale;
+
+				for (int dy = 0; dy < scale; dy++) {
+					for (int dx = 0; dx < scale; dx++) {
+						int x = base_x + dx;
+						int y = base_y + dy;
+						if (x >= 0 && y >= 0 && x < width && y < height) {
+							int idx = y * stride + x * 3;
+							frame[idx]     = color_r;
+							frame[idx + 1] = color_g;
+							frame[idx + 2] = color_b;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+// Draw a string using the large character routine.
+// This function converts a virtual coordinate (in mm) to pixel coordinates and draws each character.
+void drawString(u8 *frame, int width, int height, int stride, int virtual_x, int virtual_y,
+					const char *str, u8 color_r, u8 color_g, u8 color_b, int scale)
+{
+    double scale_x = (double)width / 2000.0;  	// 2000 mm horizontal range (-1000 to 1000)
+    double scale_y = (double)height / 3000.0;   // 3000 mm vertical range (0 to 3000)
+
+    // Converting virtual coordinates (in mm) to pixel coordinates
+    int pixel_x = (int)round(virtual_x * scale_x);
+    int pixel_y = height - 1 - (int)round( virtual_y * scale_y );
+
+    while (*str) {
+        // Draw the character at the calculated pixel locationsss
+        drawChar(frame, width, height, stride, pixel_x, pixel_y,
+                 *str, color_r, color_g, color_b, scale);
+        // Advance the x-coordinate by 8*scale pixels
+        pixel_x += 8 * scale;
+        str++;
+    }
+}
+
+
+/*
+ * Set a pixel in the frame.
+ * The (x, y) are in a coordinate system where (0,0) is at the bottom center.
+ */
+void setPixel(u8 *frame, int x_mm, int y_mm, int width, int height, int stride, u8 red, u8 green, u8 blue)
+{
+    double scale_x = (double)width / 2000.0;
+    double scale_y = (double)height / 1000.0;
+
+    int display_x = (int)round( x_mm * scale_x );
+    int display_y = (height - 1) - (int)round( y_mm * scale_y );
+
+    // Bounds-check, skip drawing if off-screen
+    if (display_x < 0 || display_x >= width || display_y < 0 || display_y >= height) {
+        return;
+    }
+
+    int index = display_y * stride + display_x * 3;
+    frame[index + 0] = red;
+    frame[index + 1] = green;
+    frame[index + 2] = blue;
+}
+
+/*
+ * Draw a circle using the Midpoint Circle Algorithm.
+*/
+void drawCircleX(u8 *frame, double centerXmm, double centerYmm, double radius_mm,
+                int width, int height, int stride, u8 red, u8 green, u8 blue)
+{
+	if (centerXmm < (-500 + radius_mm))
+	{
+		centerXmm = -500 + radius_mm;
+	}
+	else if (centerXmm > 500-radius_mm)
+	{
+		centerXmm = 500 - radius_mm;
+	}
+	// Convert center and radius from mm to pixels using the uniform scale.
+    int centerPx = (int)round((centerXmm + 500)*width/2100);
+    int centerPy = (height - 1) - (int)round((centerYmm)*height/1000);
+    int radiusPx = (int)round(radius_mm );
+
+    // Standard midpoint circle algorithm using pixel-space coordinates.
+    int x = radiusPx, y = 0;
+    int err = 0;
+    while (x >= y) {
+        // Compute the eight symmetric points in pixel space.
+        int pts[8][2] = {
+            { centerPx + x, centerPy + y },
+            { centerPx + y, centerPy + x },
+            { centerPx - y, centerPy + x },
+            { centerPx - x, centerPy + y },
+            { centerPx - x, centerPy - y },
+            { centerPx - y, centerPy - x },
+            { centerPx + y, centerPy - x },
+            { centerPx + x, centerPy - y }
+        };
+
+        // Write these pixel values directly into the frame.
+        for (int i = 0; i < 8; i++) {
+            int px = pts[i][0];
+            int py = pts[i][1];
+            if (px >= 0 && px < width && py >= 0 && py < height) {
+                int index = py * stride + px * 3;
+                frame[index]     = red;
+                frame[index + 1] = green;
+                frame[index + 2] = blue;
+            }
+        }
+
+        y++;
+        if (err <= 0) {
+            err += 2 * y + 1;
+        }
+        if (err > 0) {
+            x--;
+            err -= 2 * x + 1;
+        }
+    }
+}
+
+void drawCircleY(u8 *frame, double centerYmm, double centerZmm, double radius_mm,
+                int width, int height, int stride, u8 red, u8 green, u8 blue)
+{
+	// Convert center and radius from mm to pixels using the uniform scale.
+
+	if (centerYmm < (radius_mm))
+	{
+		centerYmm = radius_mm;
+	}
+	else if (centerYmm > 2000-radius_mm)
+	{
+		centerYmm = 2000 - radius_mm;
+	}
+
+
+    int centerPx =  (int)round(centerYmm)*width/2100 + 11*width/21;
+    int centerPy = (height - 1) - (int)round(centerZmm)*height/1000;
+    int radiusPx = (int)round(radius_mm );
+
+    // Standard midpoint circle algorithm using pixel-space coordinates.
+    int x = radiusPx, y = 0;
+    int err = 0;
+    while (x >= y) {
+        // Compute the eight symmetric points in pixel space.
+        int pts[8][2] = {
+            { centerPx + x, centerPy + y },
+            { centerPx + y, centerPy + x },
+            { centerPx - y, centerPy + x },
+            { centerPx - x, centerPy + y },
+            { centerPx - x, centerPy - y },
+            { centerPx - y, centerPy - x },
+            { centerPx + y, centerPy - x },
+            { centerPx + x, centerPy - y }
+        };
+
+        // Write these pixel values directly into the frame.
+        for (int i = 0; i < 8; i++) {
+            int px = pts[i][0];
+            int py = pts[i][1];
+            if (px >= 0 && px < width && py >= 0 && py < height) {
+                int index = py * stride + px * 3;
+                frame[index]     = red;
+                frame[index + 1] = green;
+                frame[index + 2] = blue;
+            }
+        }
+
+        y++;
+        if (err <= 0) {
+            err += 2 * y + 1;
+        }
+        if (err > 0) {
+            x--;
+            err -= 2 * x + 1;
+        }
+    }
+}
+
+void fillCircle(u8 *frame, int centerX, int centerY, int radius,
+                int width, int height, int stride, u8 red, u8 green, u8 blue)
+{
+    for (int y_offset = -radius; y_offset <= radius; y_offset++) {
+        int y = centerY + y_offset;
+        int dx = (int) round(sqrt((double)radius * radius - (double)y_offset * y_offset));
+
+        for (int x_offset = -dx; x_offset <= dx; x_offset++) {
+            int x = centerX + x_offset;
+            setPixel(frame, x, y, width, height, stride, red, green, blue);
+        }
+    }
+}
+
+/*
+ * Draw a line using Bresenham's Line Algorithm.
+ */
+void drawLine(u8 *frame, int x0, int y0, int x1, int y1,
+              int width, int height, int stride, u8 red, u8 green, u8 blue)
+{
+    int dx = abs(x1 - x0);
+    int dy = -abs(y1 - y0);
+    int sx = (x0 < x1) ? 1 : -1;
+    int sy = (y0 < y1) ? 1 : -1;
+    int err = dx + dy;
+    while (1) {
+        setPixel(frame, x0, y0, width, height, stride, red, green, blue);
+        if (x0 == x1 && y0 == y1)
+            break;
+        int e2 = 2 * err;
+        if (e2 >= dy) {
+            err += dy;
+            x0 += sx;
+        }
+        if (e2 <= dx) {
+            err += dx;
+            y0 += sy;
+        }
+    }
+}
+
+/*
+ * Draw the arrowhead at (x1,y1) given the line from (x0,y0) to (x1,y1).
+ * The arrowhead is drawn as two short lines at  30  from the main line.
+ */
+void drawArrowHead(u8 *frame, int x0, int y0, int x1, int y1,
+                   int width, int height, int stride, u8 red, u8 green, u8 blue)
+{
+    float angle = atan2((float)(y1 - y0), (float)(x1 - x0));
+    int head_length = 30;  			// Adjust arrowhead length as needed
+    float angleOffset = M_PI / 4;  	// 45 degrees offset
+
+    int x2 = x1 - (int)(head_length * cos(angle + angleOffset));
+    int y2 = y1 - (int)(head_length * sin(angle + angleOffset));
+    int x3 = x1 - (int)(head_length * cos(angle - angleOffset));
+    int y3 = y1 - (int)(head_length * sin(angle - angleOffset));
+
+    drawLine(frame, x1, y1, x2, y2, width, height, stride, red, green, blue);
+    drawLine(frame, x1, y1, x3, y3, width, height, stride, red, green, blue);
+}
+
+/*
+ * Draw an arrow from (x0,y0) to (x1,y1). It first draws the main line, then calls drawArrowHead to add the arrowhead.
+ */
+void drawArrow(u8 *frame, int x0, int y0, int x1, int y1,
+               int width, int height, int stride, u8 red, u8 green, u8 blue)
+{
+    drawLine(frame, x0, y0, x1, y1, width, height, stride, red, green, blue);
+    drawArrowHead(frame, x0, y0, x1, y1, width, height, stride, red, green, blue);
+}
+
+/*
+ * drawGrid(): Draws a grid on the current frame.
+ * The grid lines are drawn in a light gray color.
+ * Virtual coordinates (in mm) are used.
+ */
+void drawGrid(u8 *frame, int width, int height, int stride)
+{
+	// Split up the screen vertically
+//	memset(frame, 0, width*height*3);
+//	for (int i = 0; i <21; i ++)
+//	{
+//		drawLine(frame, i*width/21, 0, i*width/21, height, width, height, stride, 200,200,200);
+//	}
+	// Max/Min coordinates
+    int min_x = -1000, max_x =  1000, min_y = 0, max_y = 1000;
+
+    // Grid spacing (mm)
+    int x_spacing = 200;  // 0.2 m on the x-axis
+    int y_spacing = 200;  // 0.5 m on the y-axis
+
+//    memset(frame, 0, width * height * 3);
+
+    // Draw vertical grid lines and label each line
+    for (int vx = min_x; vx <= max_x; vx += x_spacing) {
+        drawLine(frame, vx, min_y, vx, max_y, width, height, stride, 200, 200, 200);
+
+        char label[16];
+        sprintf(label, "%.1f m", vx / 1000.0);
+        // Draw text marker for grid line
+        drawString(frame, width, height, stride, vx + 10, 50, label, 255, 255, 255, 1);
+    }
+
+    // Draw horizontal grid lines and label each line
+    for (int vy = min_y; vy <= max_y; vy += y_spacing) {
+        drawLine(frame, min_x, vy, max_x, vy, width, height, stride, 200, 200, 200);
+
+        char label[16];
+        sprintf(label, "%.1f m", vy / 1000.0);
+        // Draw text marker for grid line
+        drawString(frame, width, height, stride, min_x + 20, vy - 20, label, 255, 255, 255, 1);
+    }
+}
+
+void drawObjectInGridsWithGap(
+    u8 *frame,
+    int width,
+    int height,
+    int stride,
+    int x_mm, // in [-1000..+1000]
+    int y_mm, // in [0..2000]
+    int z_mm  // in [0..1000]
+)
+{
+
+	drawCircleX(frame, (int)round(x_mm), (int)round(z_mm), 50, width, height, stride, 0, 0, 255); // Red
+//	drawCircleX(frame, (int)round(-250), (int)round(200), 50, width, height, stride, 0, 0, 255); // Red
+//	drawCircleX(frame, (int)round(0), (int)round(400), 50, width, height, stride, 0, 0, 255); // Red
+//	usleep(50000); // 50 ms delay
+//	drawCircleX(frame, (int)round(250), (int)round(600), 50, width, height, stride, 0, 0, 255); // Red
+//	drawCircleX(frame, (int)round(500), (int)round(800), 50, width, height, stride, 0, 0, 255); // Red
+
+    // Right grid coords (y,z)
+//    double px_right = rightGridLeft + (y_mm * scaleRightY); // in [rightGridLeft.. rightGridLeft+rightW]
+//    double py_right = (z_mm * scaleZ);
+    drawCircleY(frame, (int)round(y_mm), (int)round(z_mm), 50, width, height, stride, 255, 0, 0); // Green
+}
+
+/* Draw two grids side-by-side.
+   Left grid: x-z coordinates.
+   Right grid: y-z coordinates.
+   Assumes full screen dimensions are provided (width, height).
+   Each grid gets half the screen width. */
+/*
+ * Draws two side-by-side grids into 'frame':
+ *   Left:  x in [-1000..1000], z in [0..1000]
+ *   Right: y in [0..2000],     z in [0..1000]
+ */
+/****************************************************************************/
+/* drawDualGridsWithGap                                                     */
+/*   Draws two full-height grids (x–z and y–z) across the entire screen,    */
+/*   leaving a 50-pixel vertical gap in the center.                         */
+/*                                                                          */
+/*   Left grid (x–z): x in [-1000..+1000], z in [0..1000]                   */
+/*   Right grid (y–z): y in [0..2000],    z in [0..1000]                    */
+/*   Both use 200 mm spacing for lines.                                     */
+/****************************************************************************/
+void drawDualGridsWithGap(u8 *frame, int width, int height, int stride)
+{
+    // 1) Clear the entire frame to black.
+    memset(frame, 0, width * height);
+
+    // 2) Define a 100-pixel gap in the center
+    int gapPx = 15;
+
+    // 3) Each grid's pixel width is (width - gapPx)/2.
+    int leftW  = (width - gapPx) / 2;  // for the left grid
+    int rightW = (width - gapPx) / 2;  // for the right grid
+    int rightGridLeft = leftW + gapPx; // x-coordinate where the right grid begins
+
+    // 4) Scaling factors:
+    //    Left grid (x–z): x spans 2000 mm => scaleLeftX
+    double scaleLeftX = (double)leftW / 2000.0;
+    //    Right grid (y–z): y spans 2000 mm => scaleRightY
+    double scaleRightY = (double)rightW / 2000.0;
+    //    Both grids: z spans 1000 mm => scaleZ
+    double scaleZ = (double)height / 1000.0;
+
+    // 5) Grid spacing (in mm)
+    int horSpacing = 200;  // for x or y
+    int verSpacing = 200;  // for z
+
+    // -------------------------------------------------------------
+    // LEFT GRID (x–z): from x=0..leftW, full height
+    // -------------------------------------------------------------
+    // Vertical lines: x in [-1000..+1000]
+    for (int x = -1000; x <= 1000; x += horSpacing)
+    {
+        // Convert x mm => pixel x in [0..leftW]
+        double px = (x + 1000.0) * scaleLeftX;
+        if (px < 0.0)       px = 0.0;           // clamp
+        if (px > (double)leftW) px = (double)leftW; // clamp
+
+        int xPix = (int)round(px);
+
+        // z=0 => bottom => y=height;  z=1000 => top => y=0
+        int yPixBottom = height;
+        int yPixTop    = 0;  // or: height - (int)round(1000 * scaleZ)
+
+        // Draw vertical line in left grid
+        drawLine(frame, xPix, yPixBottom, xPix, yPixTop, width, height, stride, 200, 200, 200);
+
+        if (x <= 800)
+        {
+        // Label near the bottom
+        char label[16];
+        sprintf(label, "%.1f m", (double)x / 1000.0);  // e.g. -1.0..+1.0
+        drawString(frame, width, height, stride, xPix + 5, yPixBottom - 1050, label, 255, 255, 255, 1);
+        }
+    }
+
+    // Horizontal lines: z in [0..1000]
+    for (int z = 0; z <= 1000; z += verSpacing)
+    {
+        int yPix = (int)round(z * scaleZ);
+        // Draw line from x=0..leftW
+        drawLine(frame, 0, yPix, leftW, yPix, width, height, stride, 200, 200, 200);
+
+        // Label near the left edge
+        char label[16];
+        sprintf(label, "%.1f m", (double)z / 1000.0); // e.g. 0.0..1.0
+        drawString(frame, width, height, stride, 4, yPix - 12, label, 255, 255, 255, 1);
+    }
+
+    // -------------------------------------------------------------
+    // RIGHT GRID (y–z): from x= rightGridLeft.. (rightGridLeft + rightW), full height
+    // -------------------------------------------------------------
+    // Vertical lines: y in [0..2000]
+    for (int y = 0; y <= 2000; y += horSpacing)
+    {
+        double px = y * scaleRightY;  // [0..rightW]
+        if (px < 0.0)          px = 0.0;
+        if (px > (double)rightW) px = (double)rightW;
+
+        int xPix = rightGridLeft + (int)round(px);
+
+        int yPixBottom = height;
+        int yPixTop    = 0;
+
+        // Draw vertical line in the right grid
+        drawLine(frame, xPix, yPixBottom, xPix, yPixTop, width, height, stride, 200, 200, 200);
+
+        if (y <= 1800)
+        {
+        // Label near the bottom
+        char label[16];
+        sprintf(label, "%.1f m", (double)y / 1000.0); // e.g. 0..2.0
+        drawString(frame, width, height, stride, xPix + 2, yPixBottom - 1050, label, 255, 255, 255, 1);
+        }
+    }
+
+    // Horizontal lines: z in [0..1000]
+    for (int z = 0; z <= 1000; z += verSpacing)
+    {
+        int yPix = (int)round(z * scaleZ);
+        int xLeft  = rightGridLeft;
+        int xRight = rightGridLeft + rightW;
+
+        drawLine(frame, xLeft, yPix, xRight, yPix, width, height, stride, 200, 200, 200);
+
+        // Label near the left edge of the right grid
+        char label[16];
+        sprintf(label, "%.1f m", (double)z / 1000.0);
+        drawString(frame, width, height, stride, xLeft + 4, yPix - 12, label, 255, 255, 255, 1);
+    }
+}
+
+/*
+ * PreDrawGrid(): Draws the grid once into the background buffer.
+ */
+void PreDrawGrid(u8 *gridFrame, int width, int height, int stride)
+{
+    memset(gridFrame, 0, DEMO_MAX_FRAME);
+    drawDualGridsWithGap(gridFrame, width, height, stride);
+    Xil_DCacheFlushRange((unsigned int)gridFrame, DEMO_MAX_FRAME);
+}
+
+void DemoDrawDynamicTrajectory(u8 *frame, int width, int height, int stride)
+{
+    // Copy the static grid from gridFrame into the active frame.
+    memcpy(frame, gridFrame, DEMO_MAX_FRAME);
+
+    // Drawing the trajectory path
+//    if (trajectory_index > 1) {
+//        for (int i = 0; i < trajectory_index - 1; i++) {
+//            drawLine(frame, trajectory_buffer[i].x, trajectory_buffer[i].y, trajectory_buffer[i+1].x,
+//                     trajectory_buffer[i+1].y, width, height, stride, 255, 255, 255);
+//        }
+//    }
+
+    // Draw the moving object: a filled red circle at the current (last) point.
+    // if (trajectory_index > 0) {
+        int moving_radius = 100; // virtual mm for the moving object's circle
+        drawCircle(frame, trajectory_buffer.x, trajectory_buffer.y, moving_radius, width, height, stride, 0, 0, 255);
+    // }
+
+    // If the trajectory is complete, draw the landing (destination) circle and location (x, y) text.
+    // if (trajectory_index >= TRAJECTORY_BUFFER_SIZE) {
+    //     int landing_radius = 100; // virtual mm for the landing circle
+    //     fillCircle(frame, trajectory_buffer[trajectory_index - 1].x, trajectory_buffer[trajectory_index - 1].y,
+    //                landing_radius, width, height, stride, 0, 0, 255);
+
+    //     // String with the (x,y) coordinates
+    //     char coordStr[32];
+    //     sprintf(coordStr, "(%.2f, %.2f) m", trajectory_buffer[trajectory_index - 1].x / 1000.0,
+    //        		  trajectory_buffer[trajectory_index - 1].y / 1000.0);
+
+    //     // Determine a location for the text relative to the landing point.
+    //     int text_x = trajectory_buffer[trajectory_index - 1].x + 100; // adjust offset as needed
+    //     int text_y = trajectory_buffer[trajectory_index - 1].y + 50;
+
+    //     // Draw the text in white with a scale factor of 3 (for larger characters).
+    //     drawString(frame, width, height, stride, text_x, text_y, coordStr, 255, 255, 255, 2);
+
+    //     int landing_x = trajectory_buffer[trajectory_index - 1].x;
+    //     int landing_y = trajectory_buffer[trajectory_index - 1].y;
+
+	// 	if (landing_count < MAX_LANDING_HISTORY) {
+	// 		landing_history[landing_count].x2 = landing_x;
+	// 		landing_history[landing_count].y2 = landing_y;
+	// 		landing_count++;
+	// 	}
+    // }
+    // Flush the framebuffer so changes are visible.
+    Xil_DCacheFlushRange((unsigned int)frame, DEMO_MAX_FRAME);
+}
+
+//--------------------------
+// New function: ShowLandingHistory()
+//--------------------------
+// Copies the pre-drawn grid into the active frame and then draws a filled red circle at each stored landing position.
+void ShowLandingHistory(u8 *frame, int width, int height, int stride)
+{
+	// Copy the static grid from gridFrame into the active frame.
+    memcpy(frame, gridFrame, DEMO_MAX_FRAME);
+
+    // For each landing position, draw a filled circle.
+    int landingCircleRadius = 75;
+    for (int i = 0; i < landing_count; i++) {
+    	fillCircle(frame, landing_history[i].x2, landing_history[i].y2, landingCircleRadius, width, height, stride, 0, 0, 255);
+
+		char coordStr[32];
+		sprintf(coordStr, "(%.2f, %.2f) m", landing_history[i].x2 / 1000.0, landing_history[i].y2 / 1000.0);
+
+		// Location for the text relative to the landing circle.
+		int text_x = landing_history[i].x2 + 125;
+		int text_y = landing_history[i].y2 + 100;
+		drawString(frame, width, height, stride, text_x, text_y, coordStr, 255, 255, 255, 2);
+    }
+    Xil_DCacheFlushRange((unsigned int)frame, DEMO_MAX_FRAME);
+}
+
+int main(void)
+{
+	Xil_ICacheEnable();
+	Xil_DCacheEnable();
+
+//	volatile int * sensor = (int *)SENSOR_READ_BASE_ADDR;
+//	volatile int * x = (int *)X_COORDINATE;
+//	volatile int * y = (int *)Y_COORDINATE;
+//    volatile int * z = (int *)Z_COORDINATE;
+//	while (1) {
+//		for(int i = 0; i < 12; i++)
+//			xil_printf("sensor: %d %d\n\r", i, *(sensor+i));
+//		xil_printf("x, y, z %d %d\n\r", *x, *y, *z);
+//		usleep(5000);
+//	}
+
+	DemoInitialize();
+
+	DemoRun();
+
+	return 0;
+}
+
+void DemoInitialize()
+{
+	int Status;
+	XAxiVdma_Config *vdmaConfig;
+	int i;
+
+	/*
+	 * Initialize an array of pointers to the 3 frame buffers
+	 */
+	for (i = 0; i < DISPLAY_NUM_FRAMES; i++)
+	{
+		pFrames[i] = frameBuf[i];
+	}
+
+	/*
+	 * Initialize VDMA driver
+	 */
+	vdmaConfig = XAxiVdma_LookupConfig(VGA_VDMA_ID);
+	if (!vdmaConfig)
+	{
+		xil_printf("No video DMA found for ID %d\r\n", VGA_VDMA_ID);
+		return;
+	}
+	Status = XAxiVdma_CfgInitialize(&vdma, vdmaConfig, vdmaConfig->BaseAddress);
+	if (Status != XST_SUCCESS)
+	{
+		xil_printf("VDMA Configuration Initialization failed %d\r\n", Status);
+		return;
+	}
+
+	/*
+	 * Initialize the Display controller and start it
+	 */
+	Status = DisplayInitialize(&dispCtrl, &vdma, DISP_VTC_ID, DYNCLK_BASEADDR, pFrames, DEMO_STRIDE);
+	if (Status != XST_SUCCESS)
+	{
+		xil_printf("Display Ctrl initialization failed during demo initialization%d\r\n", Status);
+		return;
+	}
+    // Set display mode to 1920x1080 by default
+    Status = DisplaySetMode(&dispCtrl, &VMODE_1920x1080);
+    if (Status != XST_SUCCESS)
+    {
+        xil_printf("Failed to set 1920x1080 mode\r\n");
+        return;
+    }
+	Status = DisplayStart(&dispCtrl);
+	if (Status != XST_SUCCESS)
+	{
+		xil_printf("Couldn't start display during demo initialization%d\r\n", Status);
+		return;
+	}
+
+	/*
+	 * Initialize the Interrupt controller and start it.
+	 */
+	Status = fnInitInterruptController(&intc);
+	if(Status != XST_SUCCESS) {
+		xil_printf("Error initializing interrupts");
+		return;
+	}
+	fnEnableInterrupts(&intc, &ivt[0], sizeof(ivt)/sizeof(ivt[0]));
+
+	/*
+	 * Initialize the Video Capture device
+	 */
+	Status = VideoInitialize(&videoCapt, &intc, &vdma, VID_GPIO_ID, VID_VTC_ID, VID_VTC_IRPT_ID, pFrames, DEMO_STRIDE, DEMO_START_ON_DET);
+	if (Status != XST_SUCCESS)
+	{
+		xil_printf("Video Ctrl initialization failed during demo initialization%d\r\n", Status);
+		return;
+	}
+
+	/*
+	 * Set the Video Detect callback to trigger the menu to reset, displaying the new detected resolution
+	 */
+	VideoSetCallback(&videoCapt, DemoISR, &fRefresh);
+
+	// Draw the grid once into gridFrame.
+	PreDrawGrid(gridFrame, dispCtrl.vMode.width, dispCtrl.vMode.height, DEMO_STRIDE);
+
+	return;
+}
+
+void DemoRun()
+{
+	int nextFrame = 0;
+	char userInput = 0;
+	u32 locked;
+	XGpio *GpioPtr = &videoCapt.gpio;
+	volatile uint32_t *buttons = (volatile uint32_t*)BTN_BASE_ADDR;
+
+	// Flag to indicate that the final static display has been drawn.
+//	volatile int history_display_done = 0;  // Global flag
+//	static int final_display_done = 0;
+//	int* max_distance = (int *) SENSOR_TILT_BASE_ADDR;
+//	*max_distance = 1000 << 16;
+
+	while (1) {
+//		volatile int *sensor = (int *)SENSOR_READ_BASE_ADDR;
+//		volatile int *x = (int *)X_COORDINATE;
+//		volatile int *y = (int *)Y_COORDINATE;
+//	    volatile int *z = (int *)Z_COORDINATE;
+
+//		for (int i = 0; i < 12; i++) {
+//			xil_printf("sensor: %d %d\n\r", i, *(sensor+i));
+//		}
+//		xil_printf("x, y, z %d %d %d\n\r", *x, *y, *z);
+
+		if (*buttons & 0x01) {
+			while (*buttons & 0x01) {};
+			current_mode = !current_mode;
+		}
+
+        // 1) Draw the dual grids over the entire screen.
+//        drawDualGrids(gridFrame,
+//                      dispCtrl.vMode.width,
+//                      dispCtrl.vMode.height,
+//                      dispCtrl.stride);
+
+		volatile int *x = (int *)X_COORDINATE;
+		volatile int *y = (int *)Y_COORDINATE;
+	    volatile int *z = (int *)Z_COORDINATE;
+
+//		int backIndex = (dispCtrl.curFrame + 1) % DISPLAY_NUM_FRAMES;
+//		memcpy(pFrames[backIndex], gridFrame, DEMO_MAX_FRAME);
+//
+//        // 3) Draw the object’s position in both grids.
+//		drawObjectInGridsWithGap(pFrames[backIndex],
+//                              dispCtrl.vMode.width,
+//                              dispCtrl.vMode.height,
+//                              dispCtrl.stride,
+//                              *x, *y, *z);
+//
+//        // 4) Flush the cache and update the display.
+//		Xil_DCacheFlushRange((unsigned int)pFrames[backIndex], DEMO_MAX_FRAME);
+//		DisplayChangeFrame(&dispCtrl, backIndex);
+//
+//        usleep(50000); // 50 ms delay
+
+		// if (trajectory_index == 0)
+		// 	addTrajectoryPoint(*x, *y);
+
+//	    if (*z > 0) {
+//	        trajectory_buffer.x = *x;
+//	        trajectory_buffer.y = *y;
+//	        trajectory_buffer.z = *z;
+//	    } else {
+//	    	trajectory_complete = 1;
+//	    }
+
+		if (current_mode == 0) {
+			// -------------------------------
+			// Dual-Grid Mode: Left grid (x–z) and Right grid (y–z)
+			// -------------------------------
+			// Draw the two grids side-by-side into gridFrame.
+//			drawDualGrids(gridFrame, dispCtrl.vMode.width, dispCtrl.vMode.height, dispCtrl.stride);
+//	        DemoDrawCirclesInDualGrid(gridFrame, dispCtrl.vMode.width, dispCtrl.vMode.height, dispCtrl.stride, *x, *y, *z);
+
+			int backIndex = (dispCtrl.curFrame + 1) % DISPLAY_NUM_FRAMES;
+			memcpy(pFrames[backIndex], gridFrame, DEMO_MAX_FRAME);
+
+	        // 3) Draw the object’s position in both grids.
+			drawObjectInGridsWithGap(pFrames[backIndex],
+	                              dispCtrl.vMode.width,
+	                              dispCtrl.vMode.height,
+	                              dispCtrl.stride,
+	                              *x, *y, *z);
+
+	        // 4) Flush the cache and update the display.
+			Xil_DCacheFlushRange((unsigned int)pFrames[backIndex], DEMO_MAX_FRAME);
+			DisplayChangeFrame(&dispCtrl, backIndex);
+
+//			if (!trajectory_complete) {
+				// Update trajectory points (simulate new sensor data)
+//				addTrajectoryPoint(dyn_dest_x, dyn_dest_y);
+//				trajectory_buffer.x = *x;
+//				trajectory_buffer.y = *y;
+//				if (trajectory_index >= TRAJECTORY_BUFFER_SIZE)
+//					trajectory_complete = 1;
+
+				// Instead of drawing on the current (displayed) frame,
+				// calculate the back buffer index:
+//				int backIndex = (dispCtrl.curFrame + 1) % DISPLAY_NUM_FRAMES;
+				// Draw the dynamic trajectory on the back buffer.
+//				DemoDrawDynamicTrajectory(pFrames[backIndex],
+//											dispCtrl.vMode.width,
+//											dispCtrl.vMode.height,
+//											dispCtrl.stride);
+				// Swap buffers so that the freshly drawn frame is displayed.
+//				DisplayChangeFrame(&dispCtrl, gridFrame);
+//				final_display_done = 0;
+		} else {
+			trajectory_buffer.x = *x;
+			trajectory_buffer.y = *y;
+
+			int backIndex = (dispCtrl.curFrame + 1) % DISPLAY_NUM_FRAMES;
+			DemoDrawDynamicTrajectory(pFrames[backIndex], dispCtrl.vMode.width, dispCtrl.vMode.height, dispCtrl.stride);
+			DisplayChangeFrame(&dispCtrl, backIndex);
+//			if (!history_display_done) {
+//				int backIndex = (dispCtrl.curFrame + 1) % DISPLAY_NUM_FRAMES;
+//				ShowLandingHistory(pFrames[backIndex],
+//								   dispCtrl.vMode.width,
+//								   dispCtrl.vMode.height,
+//								   dispCtrl.stride);
+//				DisplayChangeFrame(&dispCtrl, backIndex);
+//				history_display_done = 1;
+//			}
+//			history_display_done = 0;
+		}
+		usleep(250);  // Delay
+	}
+	return;
+}
+
+void DemoISR(void *callBackRef, void *pVideo)
+{
+	char *data = (char *) callBackRef;
+	*data = 1; //set fRefresh to 1
+}
+
+

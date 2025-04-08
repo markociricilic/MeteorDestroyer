@@ -4,7 +4,7 @@
 
 set TIME_start [clock seconds] 
 namespace eval ::optrace {
-  variable script "C:/Users/Muaz/Documents/MeteorDestroyer/Parser/Parser.runs/synth_1/parser_wrapper.tcl"
+  variable script "C:/Users/marko/MD/MeteorDestroyer/Parser/Parser.runs/synth_1/parser_wrapper.tcl"
   variable category "vivado_synth"
 }
 
@@ -70,7 +70,6 @@ proc create_report { reportName command } {
   }
 }
 OPTRACE "synth_1" START { ROLLUP_AUTO }
-set_msg_config -id {HDL-1065} -limit 10000
 OPTRACE "Creating in-memory project" START { }
 create_project -in_memory -part xc7a200tsbg484-1
 
@@ -78,49 +77,63 @@ set_param project.singleFileAddWarning.threshold 0
 set_param project.compositeFile.enableAutoGeneration 0
 set_param synth.vivado.isSynthRun true
 set_msg_config -source 4 -id {IP_Flow 19-2162} -severity warning -new_severity info
-set_property webtalk.parent_dir C:/Users/Muaz/Documents/MeteorDestroyer/Parser/Parser.cache/wt [current_project]
-set_property parent.project_path C:/Users/Muaz/Documents/MeteorDestroyer/Parser/Parser.xpr [current_project]
+set_property webtalk.parent_dir C:/Users/marko/MD/MeteorDestroyer/Parser/Parser.cache/wt [current_project]
+set_property parent.project_path C:/Users/marko/MD/MeteorDestroyer/Parser/Parser.xpr [current_project]
 set_property XPM_LIBRARIES {XPM_CDC XPM_MEMORY} [current_project]
 set_property default_lib xil_defaultlib [current_project]
 set_property target_language Verilog [current_project]
+set_property board_part_repo_paths {C:/Xilinx/Vivado/2022.1/data/boards/board_files} [current_project]
 set_property board_part digilentinc.com:nexys_video:part0:1.2 [current_project]
 set_property ip_repo_paths {
-  c:/Users/Muaz/Documents/MeteorDestroyer/Parser/Parser.srcs/sources_1/localization
-  c:/Users/Muaz/Documents/MeteorDestroyer/Parser/Parser.srcs/sources_1/new
+  c:/Users/marko/MD/MeteorDestroyer/localization
+  c:/Users/marko/MD/MeteorDestroyer/Parser/Parser.srcs/sources_1/localization
+  c:/Users/marko/MD/MeteorDestroyer/Parser/Parser.srcs/sources_1/new
+  c:/Users/marko/MD/MeteorDestroyer/Parser_ip
+  c:/Users/marko/MD/MeteorDestroyer/servo_controller_ip
+  c:/Users/marko/MD/MeteorDestroyer/Localizer_ip
 } [current_project]
 update_ip_catalog
-set_property ip_output_repo c:/Users/Muaz/Documents/MeteorDestroyer/Parser/Parser.cache/ip [current_project]
+set_property ip_output_repo c:/Users/marko/MD/MeteorDestroyer/Parser/Parser.cache/ip [current_project]
 set_property ip_cache_permissions {read write} [current_project]
 OPTRACE "Creating in-memory project" END { }
 OPTRACE "Adding files" START { }
-read_verilog -library xil_defaultlib c:/Users/Muaz/Documents/MeteorDestroyer/Parser/Parser.gen/sources_1/bd/parser/hdl/parser_wrapper.v
-add_files C:/Users/Muaz/Documents/MeteorDestroyer/Parser/Parser.srcs/sources_1/bd/parser/parser.bd
-set_property used_in_implementation false [get_files -all c:/Users/Muaz/Documents/MeteorDestroyer/Parser/Parser.gen/sources_1/bd/parser/ip/parser_clk_wiz_0_0/parser_clk_wiz_0_0_board.xdc]
-set_property used_in_implementation false [get_files -all c:/Users/Muaz/Documents/MeteorDestroyer/Parser/Parser.gen/sources_1/bd/parser/ip/parser_clk_wiz_0_0/parser_clk_wiz_0_0.xdc]
-set_property used_in_implementation false [get_files -all c:/Users/Muaz/Documents/MeteorDestroyer/Parser/Parser.gen/sources_1/bd/parser/ip/parser_clk_wiz_0_0/parser_clk_wiz_0_0_ooc.xdc]
-set_property used_in_synthesis false [get_files -all c:/Users/Muaz/Documents/MeteorDestroyer/Parser/Parser.gen/sources_1/bd/parser/ip/parser_ila_0_1/ila_v6_2/constraints/ila_impl.xdc]
-set_property used_in_implementation false [get_files -all c:/Users/Muaz/Documents/MeteorDestroyer/Parser/Parser.gen/sources_1/bd/parser/ip/parser_ila_0_1/ila_v6_2/constraints/ila_impl.xdc]
-set_property used_in_implementation false [get_files -all c:/Users/Muaz/Documents/MeteorDestroyer/Parser/Parser.gen/sources_1/bd/parser/ip/parser_ila_0_1/ila_v6_2/constraints/ila.xdc]
-set_property used_in_implementation false [get_files -all c:/Users/Muaz/Documents/MeteorDestroyer/Parser/Parser.gen/sources_1/bd/parser/ip/parser_ila_0_1/parser_ila_0_1_ooc.xdc]
-set_property used_in_implementation false [get_files -all c:/Users/Muaz/Documents/MeteorDestroyer/Parser/Parser.gen/sources_1/bd/parser/ip/parser_rst_clk_wiz_0_100M_0/parser_rst_clk_wiz_0_100M_0_board.xdc]
-set_property used_in_implementation false [get_files -all c:/Users/Muaz/Documents/MeteorDestroyer/Parser/Parser.gen/sources_1/bd/parser/ip/parser_rst_clk_wiz_0_100M_0/parser_rst_clk_wiz_0_100M_0.xdc]
-set_property used_in_implementation false [get_files -all c:/Users/Muaz/Documents/MeteorDestroyer/Parser/Parser.gen/sources_1/bd/parser/ip/parser_rst_clk_wiz_0_100M_0/parser_rst_clk_wiz_0_100M_0_ooc.xdc]
-set_property used_in_implementation false [get_files -all c:/Users/Muaz/Documents/MeteorDestroyer/Parser/Parser.gen/sources_1/bd/parser/ip/parser_microblaze_0_0/parser_microblaze_0_0.xdc]
-set_property used_in_implementation false [get_files -all c:/Users/Muaz/Documents/MeteorDestroyer/Parser/Parser.gen/sources_1/bd/parser/ip/parser_microblaze_0_0/parser_microblaze_0_0_ooc_debug.xdc]
-set_property used_in_implementation false [get_files -all c:/Users/Muaz/Documents/MeteorDestroyer/Parser/Parser.gen/sources_1/bd/parser/ip/parser_microblaze_0_0/parser_microblaze_0_0_ooc.xdc]
-set_property used_in_implementation false [get_files -all c:/Users/Muaz/Documents/MeteorDestroyer/Parser/Parser.gen/sources_1/bd/parser/ip/parser_dlmb_v10_4/parser_dlmb_v10_4_ooc.xdc]
-set_property used_in_implementation false [get_files -all c:/Users/Muaz/Documents/MeteorDestroyer/Parser/Parser.gen/sources_1/bd/parser/ip/parser_ilmb_v10_4/parser_ilmb_v10_4_ooc.xdc]
-set_property used_in_implementation false [get_files -all c:/Users/Muaz/Documents/MeteorDestroyer/Parser/Parser.gen/sources_1/bd/parser/ip/parser_dlmb_bram_if_cntlr_4/parser_dlmb_bram_if_cntlr_4_ooc.xdc]
-set_property used_in_implementation false [get_files -all c:/Users/Muaz/Documents/MeteorDestroyer/Parser/Parser.gen/sources_1/bd/parser/ip/parser_ilmb_bram_if_cntlr_4/parser_ilmb_bram_if_cntlr_4_ooc.xdc]
-set_property used_in_implementation false [get_files -all c:/Users/Muaz/Documents/MeteorDestroyer/Parser/Parser.gen/sources_1/bd/parser/ip/parser_lmb_bram_4/parser_lmb_bram_4_ooc.xdc]
-set_property used_in_implementation false [get_files -all c:/Users/Muaz/Documents/MeteorDestroyer/Parser/Parser.gen/sources_1/bd/parser/ip/parser_mdm_1_4/parser_mdm_1_4.xdc]
-set_property used_in_implementation false [get_files -all c:/Users/Muaz/Documents/MeteorDestroyer/Parser/Parser.gen/sources_1/bd/parser/ip/parser_mdm_1_4/parser_mdm_1_4_ooc_trace.xdc]
-set_property used_in_implementation false [get_files -all c:/Users/Muaz/Documents/MeteorDestroyer/Parser/Parser.gen/sources_1/bd/parser/ip/parser_axi_uartlite_0_0/parser_axi_uartlite_0_0_board.xdc]
-set_property used_in_implementation false [get_files -all c:/Users/Muaz/Documents/MeteorDestroyer/Parser/Parser.gen/sources_1/bd/parser/ip/parser_axi_uartlite_0_0/parser_axi_uartlite_0_0_ooc.xdc]
-set_property used_in_implementation false [get_files -all c:/Users/Muaz/Documents/MeteorDestroyer/Parser/Parser.gen/sources_1/bd/parser/ip/parser_axi_uartlite_0_0/parser_axi_uartlite_0_0.xdc]
-set_property used_in_implementation false [get_files -all c:/Users/Muaz/Documents/MeteorDestroyer/Parser/Parser.gen/sources_1/bd/parser/ip/parser_xbar_0_1/parser_xbar_0_ooc.xdc]
-set_property used_in_implementation false [get_files -all c:/Users/Muaz/Documents/MeteorDestroyer/Parser/Parser.gen/sources_1/bd/parser/parser_ooc.xdc]
-set_property used_in_implementation false [get_files -all c:/Users/Muaz/Documents/MeteorDestroyer/Parser/Parser.gen/sources_1/bd/parser/ip/parser_microblaze_0_0/data/mb_bootloop_le.elf]
+read_verilog -library xil_defaultlib -sv {
+  C:/Users/marko/MD/MeteorDestroyer/Parser/Parser.srcs/sources_1/new/array_parser.sv
+  C:/Users/marko/MD/MeteorDestroyer/Localizer_ip/src/filter.sv
+  C:/Users/marko/MD/MeteorDestroyer/Parser/Parser.srcs/sources_1/tb/localize_tb.sv
+  C:/Users/marko/MD/MeteorDestroyer/Parser/Parser.srcs/sources_1/localization/min.sv
+  C:/Users/marko/MD/MeteorDestroyer/Parser/Parser.srcs/sources_1/tb/min_tb.sv
+  C:/Users/marko/MD/MeteorDestroyer/Parser/Parser.srcs/sources_1/localization/mult2.sv
+  C:/Users/marko/MD/MeteorDestroyer/Parser/Parser.srcs/sources_1/tb/mult_tb.sv
+  C:/Users/marko/MD/MeteorDestroyer/Parser/Parser.srcs/sources_1/localization/object_localization.sv
+  C:/Users/marko/MD/MeteorDestroyer/Parser/Parser.srcs/sources_1/localization/p2s.sv
+  C:/Users/marko/MD/MeteorDestroyer/Parser/Parser.srcs/sources_1/new/sensor_parser.sv
+  C:/Users/marko/MD/MeteorDestroyer/Parser/Parser.srcs/sources_1/tb/tb.sv
+}
+read_verilog -library xil_defaultlib c:/Users/marko/MD/MeteorDestroyer/Parser/Parser.gen/sources_1/bd/parser/hdl/parser_wrapper.v
+add_files C:/Users/marko/MD/MeteorDestroyer/Parser/Parser.srcs/sources_1/bd/parser/parser.bd
+set_property used_in_implementation false [get_files -all c:/Users/marko/MD/MeteorDestroyer/Parser/Parser.gen/sources_1/bd/parser/ip/parser_rst_clk_wiz_0_100M_0/parser_rst_clk_wiz_0_100M_0_board.xdc]
+set_property used_in_implementation false [get_files -all c:/Users/marko/MD/MeteorDestroyer/Parser/Parser.gen/sources_1/bd/parser/ip/parser_rst_clk_wiz_0_100M_0/parser_rst_clk_wiz_0_100M_0.xdc]
+set_property used_in_implementation false [get_files -all c:/Users/marko/MD/MeteorDestroyer/Parser/Parser.gen/sources_1/bd/parser/ip/parser_rst_clk_wiz_0_100M_0/parser_rst_clk_wiz_0_100M_0_ooc.xdc]
+set_property used_in_implementation false [get_files -all c:/Users/marko/MD/MeteorDestroyer/Parser/Parser.gen/sources_1/bd/parser/ip/parser_xbar_0_1/parser_xbar_0_ooc.xdc]
+set_property used_in_implementation false [get_files -all c:/Users/marko/MD/MeteorDestroyer/Parser/Parser.gen/sources_1/bd/parser/ip/parser_axi_uartlite_0_0/parser_axi_uartlite_0_0_board.xdc]
+set_property used_in_implementation false [get_files -all c:/Users/marko/MD/MeteorDestroyer/Parser/Parser.gen/sources_1/bd/parser/ip/parser_axi_uartlite_0_0/parser_axi_uartlite_0_0_ooc.xdc]
+set_property used_in_implementation false [get_files -all c:/Users/marko/MD/MeteorDestroyer/Parser/Parser.gen/sources_1/bd/parser/ip/parser_axi_uartlite_0_0/parser_axi_uartlite_0_0.xdc]
+set_property used_in_implementation false [get_files -all c:/Users/marko/MD/MeteorDestroyer/Parser/Parser.gen/sources_1/bd/parser/ip/parser_clk_wiz_0_0/parser_clk_wiz_0_0_board.xdc]
+set_property used_in_implementation false [get_files -all c:/Users/marko/MD/MeteorDestroyer/Parser/Parser.gen/sources_1/bd/parser/ip/parser_clk_wiz_0_0/parser_clk_wiz_0_0.xdc]
+set_property used_in_implementation false [get_files -all c:/Users/marko/MD/MeteorDestroyer/Parser/Parser.gen/sources_1/bd/parser/ip/parser_clk_wiz_0_0/parser_clk_wiz_0_0_ooc.xdc]
+set_property used_in_implementation false [get_files -all c:/Users/marko/MD/MeteorDestroyer/Parser/Parser.gen/sources_1/bd/parser/ip/parser_microblaze_0_2/parser_microblaze_0_2.xdc]
+set_property used_in_implementation false [get_files -all c:/Users/marko/MD/MeteorDestroyer/Parser/Parser.gen/sources_1/bd/parser/ip/parser_microblaze_0_2/parser_microblaze_0_2_ooc_debug.xdc]
+set_property used_in_implementation false [get_files -all c:/Users/marko/MD/MeteorDestroyer/Parser/Parser.gen/sources_1/bd/parser/ip/parser_microblaze_0_2/parser_microblaze_0_2_ooc.xdc]
+set_property used_in_implementation false [get_files -all c:/Users/marko/MD/MeteorDestroyer/Parser/Parser.gen/sources_1/bd/parser/ip/parser_dlmb_v10_5/parser_dlmb_v10_5_ooc.xdc]
+set_property used_in_implementation false [get_files -all c:/Users/marko/MD/MeteorDestroyer/Parser/Parser.gen/sources_1/bd/parser/ip/parser_ilmb_v10_5/parser_ilmb_v10_5_ooc.xdc]
+set_property used_in_implementation false [get_files -all c:/Users/marko/MD/MeteorDestroyer/Parser/Parser.gen/sources_1/bd/parser/ip/parser_dlmb_bram_if_cntlr_5/parser_dlmb_bram_if_cntlr_5_ooc.xdc]
+set_property used_in_implementation false [get_files -all c:/Users/marko/MD/MeteorDestroyer/Parser/Parser.gen/sources_1/bd/parser/ip/parser_ilmb_bram_if_cntlr_5/parser_ilmb_bram_if_cntlr_5_ooc.xdc]
+set_property used_in_implementation false [get_files -all c:/Users/marko/MD/MeteorDestroyer/Parser/Parser.gen/sources_1/bd/parser/ip/parser_lmb_bram_5/parser_lmb_bram_5_ooc.xdc]
+set_property used_in_implementation false [get_files -all c:/Users/marko/MD/MeteorDestroyer/Parser/Parser.gen/sources_1/bd/parser/ip/parser_mdm_1_5/parser_mdm_1_5.xdc]
+set_property used_in_implementation false [get_files -all c:/Users/marko/MD/MeteorDestroyer/Parser/Parser.gen/sources_1/bd/parser/ip/parser_mdm_1_5/parser_mdm_1_5_ooc_trace.xdc]
+set_property used_in_implementation false [get_files -all c:/Users/marko/MD/MeteorDestroyer/Parser/Parser.gen/sources_1/bd/parser/parser_ooc.xdc]
+set_property used_in_implementation false [get_files -all c:/Users/marko/MD/MeteorDestroyer/Parser/Parser.gen/sources_1/bd/parser/ip/parser_microblaze_0_2/data/mb_bootloop_le.elf]
 
 OPTRACE "Adding files" END { }
 # Mark all dcp files as not used in implementation to prevent them from being
@@ -131,8 +144,8 @@ OPTRACE "Adding files" END { }
 foreach dcp [get_files -quiet -all -filter file_type=="Design\ Checkpoint"] {
   set_property used_in_implementation false $dcp
 }
-read_xdc C:/Users/Muaz/Documents/MeteorDestroyer/Parser/Parser.srcs/constrs_1/new/constraints.xdc
-set_property used_in_implementation false [get_files C:/Users/Muaz/Documents/MeteorDestroyer/Parser/Parser.srcs/constrs_1/new/constraints.xdc]
+read_xdc C:/Users/marko/MD/MeteorDestroyer/Parser/Parser.srcs/constrs_1/new/constraints.xdc
+set_property used_in_implementation false [get_files C:/Users/marko/MD/MeteorDestroyer/Parser/Parser.srcs/constrs_1/new/constraints.xdc]
 
 read_xdc dont_touch.xdc
 set_property used_in_implementation false [get_files dont_touch.xdc]

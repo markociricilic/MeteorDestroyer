@@ -16,7 +16,7 @@
           <DataWidth MSB="31" LSB="0"/>
           <AddressRange Begin="0" End="8191"/>
           <Parity ON="false" NumBits="0"/>
-          <MemFile Name="parser_lmb_bram_4.mem"/>
+          <MemFile Name="parser_lmb_bram_5.mem"/>
         </BitLane>
       </BusBlock>
     </AddressSpace>

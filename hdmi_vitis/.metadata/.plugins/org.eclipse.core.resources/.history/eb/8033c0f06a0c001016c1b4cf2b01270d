@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="ASCII"?>
+<sdkproject:SdkProject xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:sdkproject="http://www.xilinx.com/sdkproject" name="Nexys-Video-HDMI" location="E:/UpgradeProjects/Nexys-Video/sw/ws/Nexys-Video-HDMI" platform="E:/UpgradeProjects/Nexys-Video/sw/ws/hdmi_wrapper/export/hdmi_wrapper/hdmi_wrapper.xpfm" platformUID="xilinx:nexys_video::0.0(custom)" systemProject="Nexys-Video-HDMI_system" sysConfig="hdmi_wrapper" runtime="C/C++" cpu="domain_microblaze_0" cpuInstance="microblaze_0" os="standalone" mssSignature="9aec8d4b709b8e68e9538b9c2c80a021">
+  <configuration name="Debug" id="xilinx.gnu.mb.exe.debug.963770731">
+    <configBuildOptions xsi:type="sdkproject:SdkOptions"/>
+    <lastBuildOptions xsi:type="sdkproject:SdkOptions"/>
+  </configuration>
+  <configuration name="Release" id="xilinx.gnu.mb.exe.release.1215166262" dirty="true">
+    <configBuildOptions xsi:type="sdkproject:SdkOptions"/>
+  </configuration>
+  <template appTemplateName="empty_application"/>
+</sdkproject:SdkProject>

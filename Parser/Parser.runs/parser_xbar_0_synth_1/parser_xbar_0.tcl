@@ -70,6 +70,7 @@ proc create_report { reportName command } {
   }
 }
 OPTRACE "parser_xbar_0_synth_1" START { ROLLUP_AUTO }
+set_param chipscope.maxJobs 3
 set_param project.vivado.isBlockSynthRun true
 set_msg_config -msgmgr_mode ooc_run
 OPTRACE "Creating in-memory project" START { }
@@ -86,15 +87,19 @@ set_property default_lib xil_defaultlib [current_project]
 set_property target_language Verilog [current_project]
 set_property board_part digilentinc.com:nexys_video:part0:1.2 [current_project]
 set_property ip_repo_paths {
+  c:/Users/Muaz/Documents/MeteorDestroyer/localization
   c:/Users/Muaz/Documents/MeteorDestroyer/Parser/Parser.srcs/sources_1/localization
   c:/Users/Muaz/Documents/MeteorDestroyer/Parser/Parser.srcs/sources_1/new
+  c:/Users/Muaz/Documents/MeteorDestroyer/Parser_ip
+  c:/Users/Muaz/Documents/MeteorDestroyer/servo_controller_ip
+  c:/Users/Muaz/Documents/MeteorDestroyer/Localizer_ip
 } [current_project]
 update_ip_catalog
 set_property ip_output_repo c:/Users/Muaz/Documents/MeteorDestroyer/Parser/Parser.cache/ip [current_project]
 set_property ip_cache_permissions {read write} [current_project]
 OPTRACE "Creating in-memory project" END { }
 OPTRACE "Adding files" START { }
-read_ip -quiet c:/Users/Muaz/Documents/MeteorDestroyer/Parser/Parser.srcs/sources_1/bd/parser/ip/parser_xbar_0_1/parser_xbar_0.xci
+read_ip -quiet C:/Users/Muaz/Documents/MeteorDestroyer/Parser/Parser.srcs/sources_1/bd/parser/ip/parser_xbar_0_1/parser_xbar_0.xci
 set_property used_in_implementation false [get_files -all c:/Users/Muaz/Documents/MeteorDestroyer/Parser/Parser.gen/sources_1/bd/parser/ip/parser_xbar_0_1/parser_xbar_0_ooc.xdc]
 
 OPTRACE "Adding files" END { }

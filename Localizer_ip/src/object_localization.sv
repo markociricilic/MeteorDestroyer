@@ -1,5 +1,6 @@
 module object_localizer #(
     parameter NUM_SENSORS = 12,
+    parameter WINDOW_SIZE = 5,
     parameter DW = 16         // Bit width for coordinates and distances
 ) (
     input clk, 
@@ -47,9 +48,9 @@ module object_localizer #(
     end
 
     integer i;
-    wire [DW-1:0] min_distances[2:0];
-    wire [4-1:0] min_indices[2:0];
-    wire min_3_valid;
+    wire [DW-1:0] first_look_min_distances[2:0];
+    wire [4-1:0] first_look_min_indices[2:0];
+    wire first_look_min_3_valid;
     reg [DW-1:0] sens_x;
     reg [DW-1:0] sens_y;
     reg [DW-1:0] sens_z;
@@ -67,8 +68,44 @@ module object_localizer #(
         .in_valid(in_valid),
         .din(distances),
         .index_in(index),
-        .dout(min_distances),
-        .output_index(min_indices),
+        .dout(first_look_min_distances),
+        .output_index(first_look_min_indices),
+        .out_valid(first_look_min_3_valid)
+    );
+
+    wire [DW-1:0] min_distances[2:0];
+    wire [4-1:0] min_indices[2:0];
+    wire min_3_valid;
+
+    reg [NUM_SENSORS-1:0] neighbour_maps [NUM_SENSORS-1:0];
+    
+    initial begin
+        neighbour_maps[0] <= 12'b000000111111;
+        neighbour_maps[1] <= 12'b000000011011;
+        neighbour_maps[2] <= 12'b000000101101;
+        neighbour_maps[3] <= 12'b000111111111;
+        neighbour_maps[4] <= 12'b000011011011;
+        neighbour_maps[5] <= 12'b000101101101;
+        neighbour_maps[6] <= 12'b111111111000;
+        neighbour_maps[7] <= 12'b011011011000;
+        neighbour_maps[8] <= 12'b101101101000;
+        neighbour_maps[9] <= 12'b111111000000;
+        neighbour_maps[10] <= 12'b101011000000;
+        neighbour_maps[11] <= 12'b101101000000;
+    end
+    nearest_neighbour #(
+        .NUM_SENSORS(NUM_SENSORS),
+        .N(3)
+    ) nearest_neighbour_inst (
+        .clk(clk),
+        .rstn(rstn),
+        .data_in(distances),
+        .input_indices(index),
+        .in_valid(first_look_min_3_valid),
+        .min_indices(first_look_min_indices),
+        .neighbour_maps(neighbour_maps),
+        .data_out(min_distances),
+        .out_indices(min_indices),
         .out_valid(min_3_valid)
     );
 
@@ -137,17 +174,17 @@ module object_localizer #(
 
         //cos and sin approximations in Q0.15 format
         case (sensor_angles[out_min_index])
-            2'h0:  cos_approx <= 16'h7fff;
-            2'h1:  cos_approx <= 16'h7ba3;  
-            2'h2:  cos_approx <= 16'h7ba3;
-            default: cos_approx <= 16'h4000;
+            2'h0:  cos_approx <= 16'h7402;
+            2'h1:  cos_approx <= 16'h700e;  
+            2'h2:  cos_approx <= 16'h700e;
+            default: cos_approx <= 16'h7402;
         endcase
 
         case (sensor_angles[out_min_index])
             2'h0:  sin_approx <= 16'h0; 
-            2'h1:  sin_approx <= 16'h2121;
-            2'h2:  sin_approx <= 16'hDEDF;
-            default: sin_approx <= 32'h0;
+            2'h1:  sin_approx <= 16'h1e06   ;
+            2'h2:  sin_approx <= 16'he1fa;
+            default: sin_approx <= 16'h0;
         endcase
 
         sens_x <= sensor_locations[out_min_index][2];
@@ -244,27 +281,51 @@ module object_localizer #(
         .dout(pose_z_fused)   
     );
     
-    reg [2:0] valid_counter = 0;
+    wire signed [DW-1:0] filter_input [3-1:0];
+
+    assign filter_input[0] = pose_x_fused;
+    assign filter_input[1] = pose_y_fused;
+    assign filter_input[2] = pose_z_fused;
+
+    reg fusion_valid[2];
 
     always @(posedge clk) begin
-        if(accumulate[3]) begin
-            valid_counter <= 1;
+        if(accumulate[3] & !accumulate[2]) begin
+            fusion_valid[0] <= 1;
         end
-
-        if(valid_counter != 0 && !accumulate[3])
-            valid_counter <= valid_counter + 1;
         else
-            out_valid <= 0;
+            fusion_valid[0] <= 0;
 
-        if(valid_counter == 2) begin
-            pose[0] <= pose_x_fused;
-            pose[1] <= pose_y_fused;
-            pose[2] <= pose_z_fused; 
-            out_valid <= 1;
-            valid_counter <= 0;
-        end
+        fusion_valid[1] <= fusion_valid[0];
     end
-    
+
+    wire signed [DW-1:0] filter_output [3-1:0];
+    wire filter_out_valid;
+    time_filter #(
+        .DW(DW),
+        .WINDOW_SIZE(WINDOW_SIZE),
+        .N(3)
+    )
+    filtered_positions(
+        .clk(clk),
+        .rstn(rstn),
+        .in_valid(fusion_valid[1]),
+        .data(filter_input),
+        .data_out(filter_output),
+        .out_valid(filter_out_valid)
+    );
+
+    always @(posedge clk)begin
+        if(filter_out_valid)begin
+            pose[0] <= filter_output[0];
+            pose[1] <= filter_output[1];
+            pose[2] <= filter_output[2];
+            out_valid <= filter_out_valid;
+        end
+        else
+            out_valid <= 1'b0;
+    end
+
     axi_slave_interface #(
         .NUM_SENSORS(NUM_SENSORS),
         .DW(DW)
@@ -470,32 +531,32 @@ module axi_slave_interface #(
 	begin
 	  if ( S_AXI_ARESETN == 1'b0 )
 	    begin
-	        sensor_locations[0] <= {16'd0, 16'd0, 16'd0};     // Sensor 1: (x=0, y=0, z=0, theta=0)
+	        sensor_locations[0] <= {16'd0, 16'd0, 16'd100};     // Sensor 1: (x=0, y=0, z=0, theta=0)
             sensor_angles[0] <= 2'h0;
-            sensor_locations[1] <= {16'd74, -16'd4, 16'd0};    // Sensor 2: (x=74, y=4, z=0, theta=10)
-            sensor_angles[1] <= 2'h1;
-            sensor_locations[2] <= {-16'd74, -16'd4, 16'd0};    // Sensor 3: (x=-74, y=-4, z=0, theta=100)
-            sensor_angles[2] <= 2'h2;
-            sensor_locations[3] <= {16'd0, 16'd0, 16'd100};     // Sensor 4: (x=0, y=0, z=100, theta=0)
+            sensor_locations[1] <= {-16'd150, 16'd0, 16'd100};    // Sensor 2: (x=74, y=4, z=0, theta=10)
+            sensor_angles[1] <= 2'h2;
+            sensor_locations[2] <= {16'd150, 16'd0, 16'd100};    // Sensor 3: (x=-74, y=-4, z=0, theta=100)
+            sensor_angles[2] <= 2'h1;
+            sensor_locations[3] <= {16'd0, 16'd0, 16'd200};     // Sensor 4: (x=0, y=0, z=100, theta=0)
             sensor_angles[3] <= 2'h0;
-            sensor_locations[4] <= {16'd74, -16'd4, 16'd100};    // Sensor 5: (x=74, y=4, z=100, theta=10)
-            sensor_angles[4] <= 2'h1;
-            sensor_locations[5] <= {-16'd74, -16'd4, 16'd100};    // Sensor 6: (x=-74, y=-4, z=100, theta=100)
-            sensor_angles[5] <= 2'h2;
-            sensor_locations[6] <= {16'd0, 16'd0, 16'd200};     // Sensor 7: (x=0, y=0, z=200, theta=0)
+            sensor_locations[4] <= {-16'd150, 16'd4, 16'd200};    // Sensor 5: (x=74, y=4, z=100, theta=10)
+            sensor_angles[4] <= 2'h2;
+            sensor_locations[5] <= {16'd150, 16'd0, 16'd200};    // Sensor 6: (x=-74, y=-4, z=100, theta=100)
+            sensor_angles[5] <= 2'h1;
+            sensor_locations[6] <= {16'd0, 16'd0, 16'd300};     // Sensor 7: (x=0, y=0, z=200, theta=0)
             sensor_angles[6] <= 2'h0;
-            sensor_locations[7] <= {16'd74, -16'd4, 16'd200};    // Sensor 8: (x=74, y=4, z=200, theta=10)
-            sensor_angles[7] <= 2'h1;
-            sensor_locations[8] <= {-16'd74, -16'd4, 16'd200};    // Sensor 9: (x=-74, y=-4, z=200, theta=-10)
-            sensor_angles[8] <= 2'h2;
-            sensor_locations[9] <= {16'd0, 16'd0, 16'd300};     // Sensor 10: (x=0, y=0, z=300, theta=0)
+            sensor_locations[7] <= {-16'd150, 16'd0, 16'd300};    // Sensor 8: (x=74, y=4, z=200, theta=10)
+            sensor_angles[7] <= 2'h2;
+            sensor_locations[8] <= {16'd150, 16'd0, 16'd300};    // Sensor 9: (x=-74, y=-4, z=200, theta=-10)
+            sensor_angles[8] <= 2'h1;
+            sensor_locations[9] <= {16'd0, 16'd0, 16'd400};     // Sensor 10: (x=0, y=0, z=300, theta=0)
             sensor_angles[9] <= 2'h0;
-            sensor_locations[10] <= {16'd74, -16'd4, 16'd300};    // Sensor 11: (x=74, y=4, z=300, theta=10)
-            sensor_angles[10] <= 2'h1;
-            sensor_locations[11] <= {-16'd74, -16'd4, 16'd300};    // Sensor 12: (x=-74, y=-4, z=300, theta=100)
-            sensor_angles[11] <= 2'h2;
+            sensor_locations[10] <= {-16'd150, 16'd0, 16'd400};    // Sensor 11: (x=74, y=4, z=300, theta=10)
+            sensor_angles[10] <= 2'h2;
+            sensor_locations[11] <= {16'd150, 16'd0, 16'd400};    // Sensor 12: (x=-74, y=-4, z=300, theta=100)
+            sensor_angles[11] <= 2'h1;
 
-            sensor_tilt <= 16'h2121;
+            sensor_tilt <= 16'h0000;
             max_considered_distance <= 16'd2000;
 	    end 
 	  else begin
@@ -504,7 +565,7 @@ module axi_slave_interface #(
 	        case (axi_awaddr[ADDR_LSB+OPT_MEM_ADDR_BITS:ADDR_LSB])
                 default: begin
                     if (axi_awaddr[ADDR_LSB+OPT_MEM_ADDR_BITS:ADDR_LSB] >= 16 &&
-                        axi_awaddr[ADDR_LSB+OPT_MEM_ADDR_BITS:ADDR_LSB] <= 30) 
+                        axi_awaddr[ADDR_LSB+OPT_MEM_ADDR_BITS:ADDR_LSB] <= 40) 
                     begin
                         int i = (axi_awaddr[ADDR_LSB+OPT_MEM_ADDR_BITS:ADDR_LSB] - 16) >> 1;
                         if ((axi_awaddr[ADDR_LSB+OPT_MEM_ADDR_BITS:ADDR_LSB] - 16) % 2 == 0) begin

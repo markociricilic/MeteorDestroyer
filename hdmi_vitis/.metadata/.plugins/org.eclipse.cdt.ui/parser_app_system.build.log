@@ -1,0 +1,6 @@
+14:19:56 **** Incremental Build of configuration Debug for project parser_app_system ****
+make all 
+Skipping SD card image generation. Reason: "The system project only has applications for microblaze processors."
+
+14:19:56 Build Finished (took 112ms)
+

@@ -236,7 +236,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>cab2f91d</spirit:value>
+            <spirit:value>b7ace3fc</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -252,7 +252,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>cab2f91d</spirit:value>
+            <spirit:value>b7ace3fc</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -266,7 +266,7 @@
         <spirit:parameters>
           <spirit:parameter>
             <spirit:name>viewChecksum</spirit:name>
-            <spirit:value>616a2b67</spirit:value>
+            <spirit:value>e29b2a41</spirit:value>
           </spirit:parameter>
         </spirit:parameters>
       </spirit:view>
@@ -651,6 +651,11 @@
         <spirit:displayName>Dw</spirit:displayName>
         <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.DW">16</spirit:value>
       </spirit:modelParameter>
+      <spirit:modelParameter spirit:dataType="integer">
+        <spirit:name>WINDOW_SIZE</spirit:name>
+        <spirit:displayName>Window Size</spirit:displayName>
+        <spirit:value spirit:format="long" spirit:resolve="generated" spirit:id="MODELPARAM_VALUE.WINDOW_SIZE">5</spirit:value>
+      </spirit:modelParameter>
     </spirit:modelParameters>
   </spirit:model>
   <spirit:choices>
@@ -664,7 +669,11 @@
     <spirit:fileSet>
       <spirit:name>xilinx_anylanguagesynthesis_view_fileset</spirit:name>
       <spirit:file>
-        <spirit:name>src/min.sv</spirit:name>
+        <spirit:name>src/filter.sv</spirit:name>
+        <spirit:fileType>systemVerilogSource</spirit:fileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>src/min_max.sv</spirit:name>
         <spirit:fileType>systemVerilogSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
@@ -672,19 +681,31 @@
         <spirit:fileType>systemVerilogSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
+        <spirit:name>src/nearest_neighbour.sv</spirit:name>
+        <spirit:fileType>systemVerilogSource</spirit:fileType>
+      </spirit:file>
+      <spirit:file>
         <spirit:name>src/p2s.sv</spirit:name>
         <spirit:fileType>systemVerilogSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
+        <spirit:name>src/number_of_ones.dat</spirit:name>
+        <spirit:userFileType>data</spirit:userFileType>
+      </spirit:file>
+      <spirit:file>
         <spirit:name>src/object_localization.sv</spirit:name>
         <spirit:fileType>systemVerilogSource</spirit:fileType>
-        <spirit:userFileType>CHECKSUM_a0d54932</spirit:userFileType>
+        <spirit:userFileType>CHECKSUM_1547378e</spirit:userFileType>
       </spirit:file>
     </spirit:fileSet>
     <spirit:fileSet>
       <spirit:name>xilinx_anylanguagebehavioralsimulation_view_fileset</spirit:name>
       <spirit:file>
-        <spirit:name>src/min.sv</spirit:name>
+        <spirit:name>src/filter.sv</spirit:name>
+        <spirit:fileType>systemVerilogSource</spirit:fileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>src/min_max.sv</spirit:name>
         <spirit:fileType>systemVerilogSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
@@ -692,8 +713,16 @@
         <spirit:fileType>systemVerilogSource</spirit:fileType>
       </spirit:file>
       <spirit:file>
+        <spirit:name>src/nearest_neighbour.sv</spirit:name>
+        <spirit:fileType>systemVerilogSource</spirit:fileType>
+      </spirit:file>
+      <spirit:file>
         <spirit:name>src/p2s.sv</spirit:name>
         <spirit:fileType>systemVerilogSource</spirit:fileType>
+      </spirit:file>
+      <spirit:file>
+        <spirit:name>src/number_of_ones.dat</spirit:name>
+        <spirit:userFileType>data</spirit:userFileType>
       </spirit:file>
       <spirit:file>
         <spirit:name>src/object_localization.sv</spirit:name>
@@ -705,7 +734,7 @@
       <spirit:file>
         <spirit:name>xgui/object_localizer_v2_0.tcl</spirit:name>
         <spirit:fileType>tclSource</spirit:fileType>
-        <spirit:userFileType>CHECKSUM_616a2b67</spirit:userFileType>
+        <spirit:userFileType>CHECKSUM_e29b2a41</spirit:userFileType>
         <spirit:userFileType>XGUI_VERSION_2</spirit:userFileType>
       </spirit:file>
     </spirit:fileSet>
@@ -726,6 +755,11 @@
       <spirit:name>Component_Name</spirit:name>
       <spirit:value spirit:resolve="user" spirit:id="PARAM_VALUE.Component_Name" spirit:order="1">object_localizer_v1_0</spirit:value>
     </spirit:parameter>
+    <spirit:parameter>
+      <spirit:name>WINDOW_SIZE</spirit:name>
+      <spirit:displayName>Window Size</spirit:displayName>
+      <spirit:value spirit:format="long" spirit:resolve="user" spirit:id="PARAM_VALUE.WINDOW_SIZE">5</spirit:value>
+    </spirit:parameter>
   </spirit:parameters>
   <spirit:vendorExtensions>
     <xilinx:coreExtensions>
@@ -739,11 +773,11 @@
       </xilinx:taxonomies>
       <xilinx:displayName>object_localizer_v2</xilinx:displayName>
       <xilinx:definitionSource>package_project</xilinx:definitionSource>
-      <xilinx:coreRevision>2</xilinx:coreRevision>
+      <xilinx:coreRevision>14</xilinx:coreRevision>
       <xilinx:upgrades>
         <xilinx:canUpgradeFrom>xilinx.com:user:object_localizer:1.0</xilinx:canUpgradeFrom>
       </xilinx:upgrades>
-      <xilinx:coreCreationDateTime>2025-03-17T23:24:37Z</xilinx:coreCreationDateTime>
+      <xilinx:coreCreationDateTime>2025-04-08T04:17:49Z</xilinx:coreCreationDateTime>
       <xilinx:tags>
         <xilinx:tag xilinx:name="nopcore"/>
         <xilinx:tag xilinx:name="ui.data.coregen.dd@7bea8ec_ARCHIVE_LOCATION">c:/Users/Muaz/Documents/MeteorDestroyer/Parser/Parser.srcs/sources_1/localization</xilinx:tag>
@@ -860,10 +894,10 @@
       <xilinx:xilinxVersion>2022.1</xilinx:xilinxVersion>
       <xilinx:checksum xilinx:scope="busInterfaces" xilinx:value="6736b9db"/>
       <xilinx:checksum xilinx:scope="memoryMaps" xilinx:value="f2afdf52"/>
-      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="6882c238"/>
+      <xilinx:checksum xilinx:scope="fileGroups" xilinx:value="3db43805"/>
       <xilinx:checksum xilinx:scope="ports" xilinx:value="247f6c45"/>
-      <xilinx:checksum xilinx:scope="hdlParameters" xilinx:value="10c167ca"/>
-      <xilinx:checksum xilinx:scope="parameters" xilinx:value="e17e17be"/>
+      <xilinx:checksum xilinx:scope="hdlParameters" xilinx:value="c8ce7637"/>
+      <xilinx:checksum xilinx:scope="parameters" xilinx:value="9224998a"/>
     </xilinx:packagingInfo>
   </spirit:vendorExtensions>
 </spirit:component>

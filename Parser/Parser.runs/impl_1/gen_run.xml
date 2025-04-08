@@ -1,66 +1,84 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<GenRun Id="impl_1" LaunchPart="xc7a200tsbg484-1" LaunchTime="1742118961">
+<GenRun Id="impl_1" LaunchPart="xc7a200tsbg484-1" LaunchTime="1743455488">
   <File Type="ROUTE-PWR" Name="parser_wrapper_power_routed.rpt"/>
   <File Type="PA-TCL" Name="parser_wrapper.tcl"/>
+  <File Type="BITSTR-MMI" Name="parser_wrapper.mmi"/>
+  <File Type="OPT-METHODOLOGY-DRC" Name="parser_wrapper_methodology_drc_opted.rpt"/>
+  <File Type="INIT-TIMING" Name="parser_wrapper_timing_summary_init.rpt"/>
   <File Type="ROUTE-PWR-SUM" Name="parser_wrapper_power_summary_routed.pb"/>
   <File Type="REPORTS-TCL" Name="parser_wrapper_reports.tcl"/>
-  <File Type="BITSTR-MSK" Name="parser_wrapper.msk"/>
-  <File Type="ROUTE-CLK" Name="parser_wrapper_clock_utilization_routed.rpt"/>
-  <File Type="RDI-RDI" Name="parser_wrapper.vdi"/>
-  <File Type="BG-BIT" Name="parser_wrapper.bit"/>
-  <File Type="BG-DRC" Name="parser_wrapper.drc"/>
-  <File Type="BG-BGN" Name="parser_wrapper.bgn"/>
-  <File Type="BG-BIN" Name="parser_wrapper.bin"/>
-  <File Type="BITSTR-RBT" Name="parser_wrapper.rbt"/>
-  <File Type="BITSTR-NKY" Name="parser_wrapper.nky"/>
-  <File Type="BITSTR-BMM" Name="parser_wrapper_bd.bmm"/>
-  <File Type="BITSTR-MMI" Name="parser_wrapper.mmi"/>
-  <File Type="ROUTE-METHODOLOGY-DRC" Name="parser_wrapper_methodology_drc_routed.rpt"/>
-  <File Type="BITSTR-SYSDEF" Name="parser_wrapper.sysdef"/>
-  <File Type="ROUTE-METHODOLOGY-DRC-PB" Name="parser_wrapper_methodology_drc_routed.pb"/>
-  <File Type="BITSTR-LTX" Name="debug_nets.ltx"/>
-  <File Type="BITSTR-LTX" Name="parser_wrapper.ltx"/>
-  <File Type="WBT-USG" Name="usage_statistics_webtalk.html"/>
+  <File Type="OPT-TIMING" Name="parser_wrapper_timing_summary_opted.rpt"/>
+  <File Type="OPT-DCP" Name="parser_wrapper_opt.dcp"/>
   <File Type="OPT-DRC" Name="parser_wrapper_drc_opted.rpt"/>
   <File Type="OPT-HWDEF" Name="parser_wrapper.hwdef"/>
+  <File Type="PWROPT-DCP" Name="parser_wrapper_pwropt.dcp"/>
+  <File Type="PWROPT-DRC" Name="parser_wrapper_drc_pwropted.rpt"/>
+  <File Type="PWROPT-TIMING" Name="parser_wrapper_timing_summary_pwropted.rpt"/>
+  <File Type="PLACE-DCP" Name="parser_wrapper_placed.dcp"/>
   <File Type="PLACE-IO" Name="parser_wrapper_io_placed.rpt"/>
+  <File Type="PLACE-CLK" Name="parser_wrapper_clock_utilization_placed.rpt"/>
   <File Type="PLACE-UTIL" Name="parser_wrapper_utilization_placed.rpt"/>
   <File Type="PLACE-UTIL-PB" Name="parser_wrapper_utilization_placed.pb"/>
-  <File Type="ROUTE-RQS" Name="parser_wrapper_routed.rqs"/>
   <File Type="PLACE-CTRL" Name="parser_wrapper_control_sets_placed.rpt"/>
-  <File Type="ROUTE-RQS-RPT" Name="route_report_qor_suggestions_0.rpt"/>
+  <File Type="PLACE-SIMILARITY" Name="parser_wrapper_incremental_reuse_placed.rpt"/>
   <File Type="PLACE-PRE-SIMILARITY" Name="parser_wrapper_incremental_reuse_pre_placed.rpt"/>
-  <File Type="POSTROUTE-PHYSOPT-RQS-RPT" Name="postroute_physopt_report_qor_suggestions_0.rpt"/>
+  <File Type="BG-BIN" Name="parser_wrapper.bin"/>
+  <File Type="PLACE-TIMING" Name="parser_wrapper_timing_summary_placed.rpt"/>
+  <File Type="POSTPLACE-PWROPT-DCP" Name="parser_wrapper_postplace_pwropt.dcp"/>
+  <File Type="BITSTR-MSK" Name="parser_wrapper.msk"/>
+  <File Type="POSTPLACE-PWROPT-TIMING" Name="parser_wrapper_timing_summary_postplace_pwropted.rpt"/>
+  <File Type="PHYSOPT-DCP" Name="parser_wrapper_physopt.dcp"/>
+  <File Type="PHYSOPT-DRC" Name="parser_wrapper_drc_physopted.rpt"/>
+  <File Type="BITSTR-RBT" Name="parser_wrapper.rbt"/>
+  <File Type="PHYSOPT-TIMING" Name="parser_wrapper_timing_summary_physopted.rpt"/>
+  <File Type="ROUTE-ERROR-DCP" Name="parser_wrapper_routed_error.dcp"/>
+  <File Type="ROUTE-DCP" Name="parser_wrapper_routed.dcp"/>
+  <File Type="ROUTE-BLACKBOX-DCP" Name="parser_wrapper_routed_bb.dcp"/>
   <File Type="ROUTE-DRC" Name="parser_wrapper_drc_routed.rpt"/>
   <File Type="ROUTE-DRC-PB" Name="parser_wrapper_drc_routed.pb"/>
+  <File Type="ROUTE-DRC-RPX" Name="parser_wrapper_drc_routed.rpx"/>
+  <File Type="ROUTE-METHODOLOGY-DRC" Name="parser_wrapper_methodology_drc_routed.rpt"/>
+  <File Type="ROUTE-METHODOLOGY-DRC-RPX" Name="parser_wrapper_methodology_drc_routed.rpx"/>
+  <File Type="ROUTE-METHODOLOGY-DRC-PB" Name="parser_wrapper_methodology_drc_routed.pb"/>
   <File Type="ROUTE-PWR-RPX" Name="parser_wrapper_power_routed.rpx"/>
   <File Type="ROUTE-STATUS" Name="parser_wrapper_route_status.rpt"/>
   <File Type="ROUTE-STATUS-PB" Name="parser_wrapper_route_status.pb"/>
-  <File Type="ROUTE-DCP" Name="parser_wrapper_routed.dcp"/>
-  <File Type="ROUTE-ERROR-DCP" Name="parser_wrapper_routed_error.dcp"/>
-  <File Type="ROUTE-BLACKBOX-DCP" Name="parser_wrapper_routed_bb.dcp"/>
   <File Type="ROUTE-TIMINGSUMMARY" Name="parser_wrapper_timing_summary_routed.rpt"/>
   <File Type="ROUTE-TIMING-PB" Name="parser_wrapper_timing_summary_routed.pb"/>
   <File Type="ROUTE-TIMING-RPX" Name="parser_wrapper_timing_summary_routed.rpx"/>
+  <File Type="ROUTE-SIMILARITY" Name="parser_wrapper_incremental_reuse_routed.rpt"/>
+  <File Type="ROUTE-CLK" Name="parser_wrapper_clock_utilization_routed.rpt"/>
   <File Type="ROUTE-BUS-SKEW" Name="parser_wrapper_bus_skew_routed.rpt"/>
   <File Type="ROUTE-BUS-SKEW-PB" Name="parser_wrapper_bus_skew_routed.pb"/>
   <File Type="ROUTE-BUS-SKEW-RPX" Name="parser_wrapper_bus_skew_routed.rpx"/>
-  <File Type="OPT-DCP" Name="parser_wrapper_opt.dcp"/>
-  <File Type="PLACE-DCP" Name="parser_wrapper_placed.dcp"/>
-  <File Type="PWROPT-DCP" Name="parser_wrapper_pwropt.dcp"/>
-  <File Type="POSTPLACE-PWROPT-DCP" Name="parser_wrapper_postplace_pwropt.dcp"/>
-  <File Type="PHYSOPT-DCP" Name="parser_wrapper_physopt.dcp"/>
   <File Type="POSTROUTE-PHYSOPT-DCP" Name="parser_wrapper_postroute_physopt.dcp"/>
   <File Type="POSTROUTE-PHYSOPT-BLACKBOX-DCP" Name="parser_wrapper_postroute_physopt_bb.dcp"/>
-  <File Type="ROUTE-DRC-RPX" Name="parser_wrapper_drc_routed.rpx"/>
-  <File Type="ROUTE-METHODOLOGY-DRC-RPX" Name="parser_wrapper_methodology_drc_routed.rpx"/>
+  <File Type="POSTROUTE-PHYSOPT-TIMING" Name="parser_wrapper_timing_summary_postroute_physopted.rpt"/>
+  <File Type="POSTROUTE-PHYSOPT-TIMING-PB" Name="parser_wrapper_timing_summary_postroute_physopted.pb"/>
+  <File Type="POSTROUTE-PHYSOPT-TIMING-RPX" Name="parser_wrapper_timing_summary_postroute_physopted.rpx"/>
+  <File Type="POSTROUTE-PHYSOPT-BUS-SKEW" Name="parser_wrapper_bus_skew_postroute_physopted.rpt"/>
+  <File Type="BG-BIT" Name="parser_wrapper.bit"/>
+  <File Type="POSTROUTE-PHYSOPT-BUS-SKEW-PB" Name="parser_wrapper_bus_skew_postroute_physopted.pb"/>
+  <File Type="POSTROUTE-PHYSOPT-BUS-SKEW-RPX" Name="parser_wrapper_bus_skew_postroute_physopted.rpx"/>
+  <File Type="BITSTR-NKY" Name="parser_wrapper.nky"/>
+  <File Type="BITSTR-BMM" Name="parser_wrapper_bd.bmm"/>
   <File Type="PDI-FILE" Name="parser_wrapper.pdi"/>
   <File Type="RCFI_FILE" Name="parser_wrapper.rcfi"/>
   <File Type="CFI_FILE" Name="parser_wrapper.cfi"/>
   <File Type="RNPI_FILE" Name="parser_wrapper.rnpi"/>
   <File Type="NPI_FILE" Name="parser_wrapper.npi"/>
   <File Type="RBD_FILE" Name="parser_wrapper.rbd"/>
+  <File Type="BITSTR-LTX" Name="debug_nets.ltx"/>
+  <File Type="BITSTR-LTX" Name="parser_wrapper.ltx"/>
+  <File Type="BITSTR-SYSDEF" Name="parser_wrapper.sysdef"/>
+  <File Type="BG-BGN" Name="parser_wrapper.bgn"/>
+  <File Type="BG-DRC" Name="parser_wrapper.drc"/>
+  <File Type="RDI-RDI" Name="parser_wrapper.vdi"/>
+  <File Type="WBT-USG" Name="usage_statistics_webtalk.html"/>
+  <File Type="ROUTE-RQS" Name="parser_wrapper_routed.rqs"/>
   <File Type="POSTROUTE-PHYSOPT-RQS" Name="parser_wrapper_postroute_physopted.rqs"/>
+  <File Type="ROUTE-RQS-RPT" Name="route_report_qor_suggestions_0.rpt"/>
+  <File Type="POSTROUTE-PHYSOPT-RQS-RPT" Name="postroute_physopt_report_qor_suggestions_0.rpt"/>
   <FileSet Name="sources" Type="DesignSrcs" RelSrcDir="$PSRCDIR/sources_1" RelGenDir="$PGENDIR/sources_1">
     <Filter Type="Srcs"/>
     <File Path="$PSRCDIR/sources_1/bd/parser/parser.bd">
@@ -70,7 +88,21 @@
         <Attr Name="UsedIn" Val="simulation"/>
       </FileInfo>
     </File>
-    <File Path="$PGENDIR/sources_1/bd/parser/hdl/parser_wrapper.v">
+    <File Path="$PSRCDIR/sources_1/new/array_parser.sv">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PPRDIR/../Localizer_ip/src/filter.sv">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/tb/localize_tb.sv">
       <FileInfo>
         <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="UsedIn" Val="implementation"/>
@@ -79,15 +111,6 @@
     </File>
     <File Path="$PSRCDIR/sources_1/localization/min.sv">
       <FileInfo>
-        <Attr Name="AutoDisabled" Val="1"/>
-        <Attr Name="UsedIn" Val="synthesis"/>
-        <Attr Name="UsedIn" Val="implementation"/>
-        <Attr Name="UsedIn" Val="simulation"/>
-      </FileInfo>
-    </File>
-    <File Path="$PSRCDIR/sources_1/localization/p2s.sv">
-      <FileInfo>
-        <Attr Name="AutoDisabled" Val="1"/>
         <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="UsedIn" Val="implementation"/>
         <Attr Name="UsedIn" Val="simulation"/>
@@ -95,7 +118,6 @@
     </File>
     <File Path="$PSRCDIR/sources_1/tb/min_tb.sv">
       <FileInfo>
-        <Attr Name="AutoDisabled" Val="1"/>
         <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="UsedIn" Val="implementation"/>
         <Attr Name="UsedIn" Val="simulation"/>
@@ -103,47 +125,6 @@
     </File>
     <File Path="$PSRCDIR/sources_1/localization/mult2.sv">
       <FileInfo>
-        <Attr Name="AutoDisabled" Val="1"/>
-        <Attr Name="UsedIn" Val="synthesis"/>
-        <Attr Name="UsedIn" Val="implementation"/>
-        <Attr Name="UsedIn" Val="simulation"/>
-      </FileInfo>
-    </File>
-    <File Path="$PSRCDIR/sources_1/new/array_parser.sv">
-      <FileInfo>
-        <Attr Name="AutoDisabled" Val="1"/>
-        <Attr Name="UsedIn" Val="synthesis"/>
-        <Attr Name="UsedIn" Val="implementation"/>
-        <Attr Name="UsedIn" Val="simulation"/>
-      </FileInfo>
-    </File>
-    <File Path="$PSRCDIR/sources_1/new/sensor_parser.sv">
-      <FileInfo>
-        <Attr Name="AutoDisabled" Val="1"/>
-        <Attr Name="UsedIn" Val="synthesis"/>
-        <Attr Name="UsedIn" Val="implementation"/>
-        <Attr Name="UsedIn" Val="simulation"/>
-      </FileInfo>
-    </File>
-    <File Path="$PSRCDIR/sources_1/tb/tb.sv">
-      <FileInfo>
-        <Attr Name="AutoDisabled" Val="1"/>
-        <Attr Name="UsedIn" Val="synthesis"/>
-        <Attr Name="UsedIn" Val="implementation"/>
-        <Attr Name="UsedIn" Val="simulation"/>
-      </FileInfo>
-    </File>
-    <File Path="$PSRCDIR/sources_1/localization/object_localization.sv">
-      <FileInfo>
-        <Attr Name="AutoDisabled" Val="1"/>
-        <Attr Name="UsedIn" Val="synthesis"/>
-        <Attr Name="UsedIn" Val="implementation"/>
-        <Attr Name="UsedIn" Val="simulation"/>
-      </FileInfo>
-    </File>
-    <File Path="$PSRCDIR/sources_1/tb/localize_tb.sv">
-      <FileInfo>
-        <Attr Name="AutoDisabled" Val="1"/>
         <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="UsedIn" Val="implementation"/>
         <Attr Name="UsedIn" Val="simulation"/>
@@ -151,7 +132,41 @@
     </File>
     <File Path="$PSRCDIR/sources_1/tb/mult_tb.sv">
       <FileInfo>
-        <Attr Name="AutoDisabled" Val="1"/>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/localization/object_localization.sv">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/localization/p2s.sv">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/new/sensor_parser.sv">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PSRCDIR/sources_1/tb/tb.sv">
+      <FileInfo>
+        <Attr Name="UsedIn" Val="synthesis"/>
+        <Attr Name="UsedIn" Val="implementation"/>
+        <Attr Name="UsedIn" Val="simulation"/>
+      </FileInfo>
+    </File>
+    <File Path="$PGENDIR/sources_1/bd/parser/hdl/parser_wrapper.v">
+      <FileInfo>
         <Attr Name="UsedIn" Val="synthesis"/>
         <Attr Name="UsedIn" Val="implementation"/>
         <Attr Name="UsedIn" Val="simulation"/>
@@ -192,20 +207,14 @@
     <Step Id="route_design"/>
     <Step Id="post_route_phys_opt_design"/>
     <Step Id="write_bitstream"/>
-    <Step Id="write_device_image"/>
   </Strategy>
-  <BlockFileSet Type="BlockSrcs" Name="parser_rst_clk_wiz_0_100M_0"/>
-  <BlockFileSet Type="BlockSrcs" Name="parser_dlmb_v10_4"/>
-  <BlockFileSet Type="BlockSrcs" Name="parser_microblaze_0_0"/>
-  <BlockFileSet Type="BlockSrcs" Name="parser_array_parser_1_0"/>
-  <BlockFileSet Type="BlockSrcs" Name="parser_clk_wiz_0_0"/>
-  <BlockFileSet Type="BlockSrcs" Name="parser_ila_0_1"/>
-  <BlockFileSet Type="BlockSrcs" Name="parser_dlmb_bram_if_cntlr_4"/>
-  <BlockFileSet Type="BlockSrcs" Name="parser_ilmb_v10_4"/>
-  <BlockFileSet Type="BlockSrcs" Name="parser_ilmb_bram_if_cntlr_4"/>
-  <BlockFileSet Type="BlockSrcs" Name="parser_lmb_bram_4"/>
-  <BlockFileSet Type="BlockSrcs" Name="parser_mdm_1_4"/>
-  <BlockFileSet Type="BlockSrcs" Name="parser_object_localizer_0_0"/>
-  <BlockFileSet Type="BlockSrcs" Name="parser_axi_uartlite_0_0"/>
   <BlockFileSet Type="BlockSrcs" Name="parser_xbar_0"/>
+  <BlockFileSet Type="BlockSrcs" Name="parser_object_localizer_1_0"/>
+  <BlockFileSet Type="BlockSrcs" Name="parser_rst_clk_wiz_0_100M_0"/>
+  <BlockFileSet Type="BlockSrcs" Name="parser_proportional_control_0_0"/>
+  <BlockFileSet Type="BlockSrcs" Name="parser_clk_wiz_0_0"/>
+  <BlockFileSet Type="BlockSrcs" Name="parser_axi_uartlite_0_0"/>
+  <BlockFileSet Type="BlockSrcs" Name="parser_microblaze_0_2"/>
+  <BlockFileSet Type="BlockSrcs" Name="parser_lmb_bram_5"/>
+  <BlockFileSet Type="BlockSrcs" Name="parser_array_parser_0_0"/>
 </GenRun>

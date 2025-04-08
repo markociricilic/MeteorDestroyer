@@ -1,11 +1,11 @@
 vhdl xil_defaultlib  \
 "../../../bd/parser/ip/parser_rst_clk_wiz_0_100M_0/sim/parser_rst_clk_wiz_0_100M_0.vhd" \
-"../../../bd/parser/ip/parser_microblaze_0_0/sim/parser_microblaze_0_0.vhd" \
-"../../../bd/parser/ip/parser_dlmb_v10_4/sim/parser_dlmb_v10_4.vhd" \
-"../../../bd/parser/ip/parser_ilmb_v10_4/sim/parser_ilmb_v10_4.vhd" \
-"../../../bd/parser/ip/parser_dlmb_bram_if_cntlr_4/sim/parser_dlmb_bram_if_cntlr_4.vhd" \
-"../../../bd/parser/ip/parser_ilmb_bram_if_cntlr_4/sim/parser_ilmb_bram_if_cntlr_4.vhd" \
-"../../../bd/parser/ip/parser_mdm_1_4/sim/parser_mdm_1_4.vhd" \
 "../../../bd/parser/ip/parser_axi_uartlite_0_0/sim/parser_axi_uartlite_0_0.vhd" \
+"../../../bd/parser/ip/parser_microblaze_0_2/sim/parser_microblaze_0_2.vhd" \
+"../../../bd/parser/ip/parser_dlmb_v10_5/sim/parser_dlmb_v10_5.vhd" \
+"../../../bd/parser/ip/parser_ilmb_v10_5/sim/parser_ilmb_v10_5.vhd" \
+"../../../bd/parser/ip/parser_dlmb_bram_if_cntlr_5/sim/parser_dlmb_bram_if_cntlr_5.vhd" \
+"../../../bd/parser/ip/parser_ilmb_bram_if_cntlr_5/sim/parser_ilmb_bram_if_cntlr_5.vhd" \
+"../../../bd/parser/ip/parser_mdm_1_5/sim/parser_mdm_1_5.vhd" \
 
 nosort

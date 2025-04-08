@@ -1,0 +1,14 @@
+# compile verilog/system verilog design source files
+sv xil_defaultlib  --include "../../../../Parser.gen/sources_1/bd/parser/ipshared/ec67/hdl" --include "../../../../Parser.gen/sources_1/bd/parser/ipshared/4e49" \
+"../../../../../Localizer_ip/src/filter.sv" \
+"../../../../Parser.srcs/sources_1/localization/min.sv" \
+"../../../../Parser.srcs/sources_1/localization/mult2.sv" \
+"../../../../Parser.srcs/sources_1/localization/object_localization.sv" \
+"../../../../Parser.srcs/sources_1/localization/p2s.sv" \
+"../../../../Parser.srcs/sources_1/tb/localize_tb.sv" \
+
+# compile glbl module
+verilog xil_defaultlib "glbl.v"
+
+# Do not sort compile order
+nosort

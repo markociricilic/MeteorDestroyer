@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
+		<item key="selection" value="main"/>
+		<item key="wrap" value="true"/>
+		<item key="casesensitive" value="false"/>
+		<item key="wholeword" value="false"/>
+		<item key="incremental" value="false"/>
+		<item key="isRegEx" value="false"/>
+		<list key="findhistory">
+			<item value="main"/>
+			<item value="GpioPtr"/>
+			<item value="drawCircleX"/>
+			<item value="drawCircle"/>
+			<item value="frame"/>
+			<item value="width / 2"/>
+			<item value="(width / 2)"/>
+			<item value="+ (width / 2)"/>
+			<item value="+ (width / 2);"/>
+			<item value="drawObjectInGridsWithGap"/>
+			<item value="drawLine"/>
+			<item value="gapPx"/>
+			<item value="drawGrid"/>
+			<item value="y_mm"/>
+			<item value="pixel_y"/>
+		</list>
+		<list key="replacehistory">
+		</list>
+	</section>
+	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
+		<item key="DIALOG_X_ORIGIN" value="1501"/>
+		<item key="DIALOG_Y_ORIGIN" value="78"/>
+		<item key="DIALOG_WIDTH" value="298"/>
+		<item key="DIALOG_HEIGHT" value="407"/>
+		<item key="DIALOG_FONT_NAME" value="1|Segoe UI|9.0|0|WINDOWS|1|-27|0|0|0|400|0|0|0|1|0|0|0|0|Segoe UI"/>
+	</section>
+</section>
